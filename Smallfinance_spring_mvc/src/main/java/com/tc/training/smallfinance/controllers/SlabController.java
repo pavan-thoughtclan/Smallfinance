@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/slab")
+@RequestMapping("/slabs")
 public class SlabController {
     @Autowired
     private SlabService slabService;
@@ -19,7 +19,7 @@ public class SlabController {
         return slabService.addSlab(slabInputDto);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public List<SlabOutputDto> getAllSlabs(){
         return slabService.getAllSlabs();
     }

@@ -1,19 +1,15 @@
 package com.tc.training.smallfinance.service.Impl;
 
 import com.tc.training.smallfinance.dtos.inputs.AccountDetailsInputDto;
-import com.tc.training.smallfinance.dtos.inputs.LoginInputDto;
-import com.tc.training.smallfinance.dtos.outputs.LoginOutputDto;
 import com.tc.training.smallfinance.dtos.outputs.UserOutputDto;
 import com.tc.training.smallfinance.exception.AccountNotFoundException;
 import com.tc.training.smallfinance.mapper.UserMapper;
-import com.tc.training.smallfinance.model.AccountDetails;
 import com.tc.training.smallfinance.model.User;
 import com.tc.training.smallfinance.repository.AccountRepository;
 import com.tc.training.smallfinance.repository.TransactionRepository;
 import com.tc.training.smallfinance.repository.UserRepository;
 import com.tc.training.smallfinance.service.TransactionService;
 import com.tc.training.smallfinance.service.UserService;
-import com.tc.training.smallfinance.utils.Role;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

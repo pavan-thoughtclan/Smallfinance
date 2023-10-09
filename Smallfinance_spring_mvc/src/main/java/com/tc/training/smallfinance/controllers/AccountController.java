@@ -29,9 +29,9 @@ public class AccountController {
         AccountDetailsOutputDto getAccount=accountServiceDetails.getAccount(accountNumber);
         return getAccount;
     }
-    @GetMapping("/getBalance")
+    @GetMapping("/getBalance/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public Double getBalance(@RequestParam Long accNo){
+    public Double getBalance(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.getBalance(accNo);
     }
 
@@ -41,14 +41,14 @@ public class AccountController {
        return  accountServiceDetails.getAccountByUser(userId);
     }
 
-    @GetMapping("/homePage")
-    @PreAuthorize("hasRole('MANAGER')")
-    public HomePageOutputDto getHomePageDetails(@RequestParam Long accNo){
+    @GetMapping("/homePage/{id}")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public HomePageOutputDto getHomePageDetails(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.getHomePageDetails(accNo);
     }
-    @GetMapping("/setKyc")
+    @GetMapping("/setKyc/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public AccountDetailsOutputDto verifyKyc(@RequestParam Long accNo){
+    public AccountDetailsOutputDto verifyKyc(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.verifyKyc(accNo);
     }
 }

@@ -229,15 +229,15 @@ public class LoanServiceImpl implements LoanService {
             transaction.setType(loan.getTypeOfLoan().toString());
            // transaction.setAmount(loan.getLoanedAmount());
             transaction.setAmount(amount);
-            transaction.setAccountNumber(String.valueOf(loan.getAccountNumber().getAccountNumber()));
-            transaction.setTo(String.valueOf(loan.getAccountNumber().getAccountNumber()));
+            transaction.setAccountNumber(Long.valueOf(String.valueOf(loan.getAccountNumber().getAccountNumber())));
+            transaction.setTo(Long.valueOf(String.valueOf(loan.getAccountNumber().getAccountNumber())));
             transaction.setPurpose("Loan amount credited");
         }
         else{
             //transaction.setFrom(loan.getAccount());
             transaction.setType(loan.getTypeOfLoan().toString());
             transaction.setAmount(amount);
-            transaction.setAccountNumber(String.valueOf(loan.getAccountNumber().getAccountNumber()));
+            transaction.setAccountNumber(Long.valueOf(String.valueOf(loan.getAccountNumber().getAccountNumber())));
            // transaction.setTo(String.valueOf(loan.getAccount().getAccountNumber()));
             transaction.setPurpose("Loan interest debited");
         }

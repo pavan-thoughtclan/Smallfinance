@@ -16,13 +16,13 @@ import java.util.UUID;
 public class FixedDepositController {
     @Autowired
     private FixedDepositService fixedDepositService;
-    @PostMapping("/createFixedDeposit")
+    @PostMapping("/create")
     @PreAuthorize("hasRole('CUSTOMER')")
     public FixedDepositOutputDto createFixedDeposit(@RequestBody  FixedDepositInputDto fixedDepositInputDto){
         return fixedDepositService.createFixedDeposit(fixedDepositInputDto);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/getAllByUser")
     @PreAuthorize("hasRole('MANAGER')")
     public List<FixedDepositOutputDto> getAllFixedDeposit(@RequestParam Long accNo){
         return fixedDepositService.getAllFixedDeposit(accNo);
@@ -34,13 +34,13 @@ public class FixedDepositController {
         return fixedDepositService.getFDDetails(accNo);
     }
 
-    @PostMapping("/break")
+    @PostMapping("/break/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public FixedDepositOutputDto breakFixedDeposit(@RequestParam String id){
+    public FixedDepositOutputDto breakFixedDeposit(@PathVariable(name="id") String id){
         return fixedDepositService.breakFixedDeposit(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
     public List<FixedDepositOutputDto> getAll(){
        return fixedDepositService.getAll();

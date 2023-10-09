@@ -178,15 +178,15 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
             transaction.setType("RD");
             // transaction.setAmount(loan.getLoanedAmount());
             transaction.setAmount(amount);
-            transaction.setAccountNumber(String.valueOf(rd.getAccountNumber().getAccountNumber()));
-            transaction.setTo(String.valueOf(rd.getAccountNumber().getAccountNumber()));
+            transaction.setAccountNumber(Long.valueOf(String.valueOf(rd.getAccountNumber().getAccountNumber())));
+            transaction.setTo(Long.valueOf(String.valueOf(rd.getAccountNumber().getAccountNumber())));
             transaction.setPurpose("RD amount credited");
         } else {
             //transaction.setFrom(loan.getAccount());
             transaction.setType("RD");
             transaction.setAmount(amount);
-            transaction.setAccountNumber(String.valueOf(rd.getAccountNumber().getAccountNumber()));
-             transaction.setTo(String.valueOf(rd.getAccountNumber().getAccountNumber()));
+            transaction.setAccountNumber(Long.valueOf(String.valueOf(rd.getAccountNumber().getAccountNumber())));
+             transaction.setTo(Long.valueOf(String.valueOf(rd.getAccountNumber().getAccountNumber())));
             transaction.setPurpose("RD amount debited");
         }
         transaction.setTrans(status);

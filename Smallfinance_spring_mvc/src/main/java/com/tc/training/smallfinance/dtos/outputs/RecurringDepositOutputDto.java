@@ -25,7 +25,7 @@ public class RecurringDepositOutputDto
 
     private LocalDate maturityDate;
 
-    private List<Long> transactionIds;
+//    private List<Long> transactionIds;
 
     private RdStatus status ;
 

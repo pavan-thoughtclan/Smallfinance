@@ -35,9 +35,9 @@ public class UserOutputDto {
 
     private Role roleName ;
 
-    private String salarySlip;
+//    private String salarySlip;
 
-    private String homeSlip;
+//    private String homeSlip;
 
     private Long accountNumber;
 

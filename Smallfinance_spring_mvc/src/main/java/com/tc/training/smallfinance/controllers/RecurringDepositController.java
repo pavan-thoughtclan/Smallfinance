@@ -28,7 +28,7 @@ public class RecurringDepositController {
         return recurringDepositService.getById(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
     public List<RecurringDepositOutputDto> getAll(){
         return recurringDepositService.getAll();

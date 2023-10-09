@@ -190,8 +190,8 @@ public class FixedDepositServiceImpl implements FixedDepositService {
 
         TransactionInputDto transactionInputDto = new TransactionInputDto();
         transactionInputDto.setAmount(fd.getTotalAmount());
-        transactionInputDto.setTo(String.valueOf(fd.getAccountNumber().getAccountNumber()));
-        transactionInputDto.setAccountNumber(String.valueOf(fd.getAccountNumber().getAccountNumber()));
+        transactionInputDto.setTo(Long.valueOf(String.valueOf(fd.getAccountNumber().getAccountNumber())));
+        transactionInputDto.setAccountNumber(Long.valueOf(String.valueOf(fd.getAccountNumber().getAccountNumber())));
         transactionInputDto.setType("FD");
         transactionInputDto.setPurpose("FD amount "+type);
         transactionInputDto.setTrans(type);

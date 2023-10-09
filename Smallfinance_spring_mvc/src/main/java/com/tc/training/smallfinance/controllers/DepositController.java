@@ -20,15 +20,12 @@ public class DepositController {
     @GetMapping("/getDetails")
     @PreAuthorize("hasRole('CUSTOMER')")
     public FDDetails getDetails(@RequestParam Long accNo){
-
        return depositService.getDetails(accNo);
-
     }
+
     @GetMapping("/get")
     @PreAuthorize("hasRole('CUSTOMER')")
     public List<Object> getAccounts(@RequestParam Long accNo){
-
         return depositService.getAccounts(accNo);
-
     }
 }

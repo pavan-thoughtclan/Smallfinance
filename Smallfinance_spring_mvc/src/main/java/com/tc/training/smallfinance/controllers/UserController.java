@@ -1,7 +1,5 @@
 package com.tc.training.smallfinance.controllers;
 
-import com.tc.training.smallfinance.dtos.inputs.LoginInputDto;
-import com.tc.training.smallfinance.dtos.outputs.LoginOutputDto;
 import com.tc.training.smallfinance.dtos.outputs.UserOutputDto;
 import com.tc.training.smallfinance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
     public List<UserOutputDto> getAllUsers(){
         return userService.getAll();

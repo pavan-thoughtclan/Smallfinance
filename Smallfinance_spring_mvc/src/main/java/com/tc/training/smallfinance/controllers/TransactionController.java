@@ -22,7 +22,7 @@ public class TransactionController {
         return transactionService.deposit(transactionInputDto,accNo);
     }
 
-    @GetMapping("/allTransactions")
+    @GetMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public List<TransactionOutputDto> transactionHistory(@RequestParam(required = false)LocalDate date1, @RequestParam(required = false) LocalDate date2,@RequestParam(required = false) String type, @RequestParam Long accNo ){
         return transactionService.getAllTransactions(date1,date2,type,accNo);

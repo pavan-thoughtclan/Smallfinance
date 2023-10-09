@@ -7,13 +7,13 @@ public class TransactionInputDto {
 
     //private String from;
 
-    private String to;
+    private Long to;   //STring
 
     private Double amount;
 
     private String purpose;
 
-    private String accountNumber;
+    private Long accountNumber; //string
 
     private String type;
 

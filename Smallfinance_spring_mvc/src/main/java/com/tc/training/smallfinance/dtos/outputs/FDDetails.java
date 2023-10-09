@@ -5,13 +5,13 @@ import lombok.Data;
 @Data
 public class FDDetails {
 
-    private Double totalFdAmount;
+    private Double totalFdAmount=0D;
 
-    private Double totalRdAmount;
+    private Double totalRdAmount=0D;
 
-    private Integer totalNoOfRD;
+    private Integer totalNoOfRD=0;
 
-    private Integer totalNoOfFD;
+    private Integer totalNoOfFD=0;
 
 
 }

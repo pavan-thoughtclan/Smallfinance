@@ -1,8 +1,6 @@
 package com.tc.training.smallfinance.service;
 
 import com.tc.training.smallfinance.dtos.inputs.AccountDetailsInputDto;
-import com.tc.training.smallfinance.dtos.inputs.LoginInputDto;
-import com.tc.training.smallfinance.dtos.outputs.LoginOutputDto;
 import com.tc.training.smallfinance.dtos.outputs.UserOutputDto;
 import com.tc.training.smallfinance.model.User;
 

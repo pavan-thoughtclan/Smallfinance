@@ -34,7 +34,7 @@ public class LoanController {
         return loanService.getAllByUser(accNo);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public List<LoanOutputDto> getAll(){
         return loanService.getAll();
