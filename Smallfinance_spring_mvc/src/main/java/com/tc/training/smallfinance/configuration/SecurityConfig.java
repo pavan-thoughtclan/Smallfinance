@@ -56,26 +56,6 @@ public class SecurityConfig {
                                 "/rd/**",
                                 "/transaction/**",
                                 "/users/**"
-//                                "/deposit/get_details",
-//                                "/deposit/get",
-//                                "/fd/create_fixed_deposit",
-//                                "/fd/users",
-//                                "/fd/get_details",
-//                                "/fd/break",
-//                                "/fd/get_all",
-//                                "/fd/{id}",
-//                                "/fd/get_all_active",
-//                                "/loan/apply",
-//                                "/loan/{id}",
-//                                "/loan/get_all_by_user",
-//                                "/loan/get_all",
-//                                "/loan/set",
-//                                "/loan/get_by_type",
-//                                "/loan/get_total_loan_amount",
-//                                "/loan/get_all_pending",
-//                                "/loan/get_all_by_not_pending",
-//                                "/loan/get_all_by_status"
-
                         ).authenticated()
                         .requestMatchers(
                                 "/account/create",
