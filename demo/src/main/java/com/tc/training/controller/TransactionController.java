@@ -22,7 +22,7 @@ public class TransactionController {
         return transactionService.deposit(transactionInputDto,accNo);
     }
 
-    @GetMapping("/allTransactions")
+    @GetMapping("")
     public Flux<TransactionOutputDto> transactionHistory(@RequestParam(required = false)LocalDate date1, @RequestParam(required = false) LocalDate date2, @RequestParam(required = false) String type, @RequestParam Long accNo ){
        /* LocalDateTime localDateTime1= date1.atStartOfDay();
         LocalDateTime localDateTime2= LocalDateTime.of(date2, LocalTime.of(23,59,59));*/

@@ -18,21 +18,15 @@ import com.tc.training.service.AccountDetailsService;
 import com.tc.training.service.RecurringDepositService;
 import com.tc.training.service.TransactionService;
 import com.tc.training.utils.PaymentStatus;
-import com.tc.training.utils.RdStatus;
 import com.tc.training.utils.Tenures;
-import com.tc.training.utils.TypeOfTransaction;
+import com.tc.training.utils.TypeOfSlab;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.*;
 
 @Service
@@ -63,7 +57,7 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
                 .switchIfEmpty(Mono.error(new AmountNotSufficientException("your balance is lower than the rd amount")))
                 .flatMap(account -> {
                     RecurringDeposit rd = recurringDepositMapper.inputDtToRecurringDeposit(recurringDepositInputDto);
-                    return slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_YEAR, TypeOfTransaction.RD)
+                    return slabRepository.findByTenuresAndTypeOfSlab(Tenures.ONE_YEAR.toString(), TypeOfSlab.RD.toString())
                             .switchIfEmpty(Mono.error(new CustomException("no slab with this details")))
                             .flatMap(slab -> {
                                 rd.setStartDate(LocalDate.now());

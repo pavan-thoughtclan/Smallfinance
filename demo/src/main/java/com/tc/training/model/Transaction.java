@@ -1,10 +1,9 @@
 package com.tc.training.model;
 
 import com.tc.training.utils.TransactionType;
-import com.tc.training.utils.TypeOfTransaction;
+import com.tc.training.utils.TypeOfSlab;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import javax.persistence.EnumType;
@@ -33,7 +32,7 @@ public class Transaction {
     private LocalDateTime timestamp;
 
     @Enumerated(EnumType.STRING)
-    private TypeOfTransaction whichTransaction;
+    private TypeOfSlab whichTransaction;
 
     private String description = "The "+amount+" has been "+transactionType+" for "+whichTransaction;
 
@@ -87,11 +86,11 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public TypeOfTransaction getWhichTransaction() {
+    public TypeOfSlab getWhichTransaction() {
         return whichTransaction;
     }
 
-    public void setWhichTransaction(TypeOfTransaction whichTransaction) {
+    public void setWhichTransaction(TypeOfSlab whichTransaction) {
         this.whichTransaction = whichTransaction;
     }
 

@@ -6,29 +6,21 @@ import com.tc.training.exception.AccountNotFoundException;
 import com.tc.training.exception.AmountNotSufficientException;
 import com.tc.training.exception.KycNotCompletedException;
 import com.tc.training.mapper.TransactionMapper;
-import com.tc.training.model.AccountDetails;
 import com.tc.training.model.Transaction;
 import com.tc.training.repo.AccountDetailsRepository;
 import com.tc.training.repo.TransactionRepository;
 import com.tc.training.service.TransactionService;
 import com.tc.training.utils.TransactionType;
-import com.tc.training.utils.TypeOfTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.comparator.Comparators;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-import java.util.function.BiFunction;
 
 @Service
 @Transactional

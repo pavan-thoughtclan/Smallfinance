@@ -18,7 +18,7 @@ import java.util.UUID;
 public class FixedDepositController {
     @Autowired
     private FixedDepositService fixedDepositService;
-    @PostMapping("/createFixedDeposit")
+    @PostMapping("/create")
     public Mono<FixedDepositOutputDto> createFixedDeposit(@RequestBody FixedDepositInputDto fixedDepositInputDto){
         return fixedDepositService.createFixedDeposit(fixedDepositInputDto);
     }
@@ -33,24 +33,24 @@ public class FixedDepositController {
         return fixedDepositService.getFDDetails(accNo);
     }
 
-    @PostMapping("/break")
-    public Mono<FixedDepositOutputDto> breakFixedDeposit(@RequestParam String id){
+    @PostMapping("/break/{id}")
+    public Mono<FixedDepositOutputDto> breakFixedDeposit(@PathVariable String id){
 
         return fixedDepositService.breakFixedDeposit(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public Flux<FixedDepositOutputDto> getAll(){
        return fixedDepositService.getAll();
     }
 
-    @GetMapping("/getbyId")
-    public Mono<FixedDepositOutputDto> getById(@RequestParam UUID id){
+    @GetMapping("/{id}")
+    public Mono<FixedDepositOutputDto> getById(@PathVariable UUID id){
         return fixedDepositService.getById(id);
     }
 
     @GetMapping("/getAllActive")
-    public Flux<FixedDepositOutputDto> getAllActive(Long accNo){
+    public Flux<FixedDepositOutputDto> getAllActive(@RequestParam Long accNo){
         return fixedDepositService.getAllActive(accNo);
     }
 

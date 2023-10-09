@@ -5,8 +5,6 @@ import com.tc.training.dtos.inputdto.FixedDepositInputDto;
 import com.tc.training.dtos.inputdto.TransactionInputDto;
 import com.tc.training.dtos.outputdto.FixedDepositOutputDto;
 import com.tc.training.model.FixedDeposit;
-import com.tc.training.utils.TransactionType;
-import com.tc.training.utils.TypeOfTransaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

@@ -18,7 +18,7 @@ public interface LoanRepository extends ReactiveCrudRepository<Loan, UUID> {
     @Query(value = "select * from loan where is_active = true")
     Flux<Loan> findByIsActive();
 
-    @Query(value = "select * from loan where account_account_number = :1 and is_active = true")
+    @Query(value = "select * from loan where account_number = :1 and is_active = true")
     Flux<Loan> findAllByAccountNumberAndIsActive(Long accNo);
 
     @Query(value = "select * from loan where status = 'UNDER_REVIEW'")

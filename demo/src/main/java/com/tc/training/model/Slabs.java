@@ -1,7 +1,7 @@
 package com.tc.training.model;
 
 import com.tc.training.utils.Tenures;
-import com.tc.training.utils.TypeOfTransaction;
+import com.tc.training.utils.TypeOfSlab;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -25,7 +25,7 @@ public class Slabs {
 
     private String interestRate;
 
-    private TypeOfTransaction typeOfTransaction;
+    private TypeOfSlab typeOfTransaction;
 
     public UUID getId() {
         return id;
@@ -51,11 +51,11 @@ public class Slabs {
         this.interestRate = interestRate;
     }
 
-    public TypeOfTransaction getTypeOfTransaction() {
+    public TypeOfSlab getTypeOfTransaction() {
         return typeOfTransaction;
     }
 
-    public void setTypeOfTransaction(TypeOfTransaction typeOfTransaction) {
+    public void setTypeOfTransaction(TypeOfSlab typeOfTransaction) {
         this.typeOfTransaction = typeOfTransaction;
     }
 }

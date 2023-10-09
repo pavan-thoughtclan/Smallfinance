@@ -1,5 +1,6 @@
 package com.tc.training.controller;
 
+
 import com.tc.training.dtos.inputdto.AccountDetailsInputDto;
 import com.tc.training.dtos.outputdto.AccountDetailsOutputDto;
 import com.tc.training.dtos.outputdto.HomePageOutputDto;
@@ -30,9 +31,9 @@ public class AccountDetailsController {
         return accountServiceDetails.createAccount(accountDetails);
 
     }
-    @GetMapping("/getAccountDetails/{id}")
-    public Mono<AccountDetailsOutputDto> getAccountDetails(@PathVariable Long id){
-        return accountServiceDetails.getAccount(id);
+    @GetMapping("/{id}")
+    public Mono<AccountDetailsOutputDto> getAccountDetails(@PathVariable(name = "id") Long accNo){
+        return accountServiceDetails.getAccount(accNo);
 
     }
 
@@ -41,15 +42,15 @@ public class AccountDetailsController {
         return  accountServiceDetails.getAccountByUser(userId);
     }
 
-    @GetMapping("/homePage")
-    public Mono<HomePageOutputDto> getHomePageDetails(@RequestParam Long accNo){
+    @GetMapping("/homePage/{id}")
+    public Mono<HomePageOutputDto> getHomePageDetails(@PathVariable(name = "id") Long accNo){
 
         return accountServiceDetails.getHomePageDetails(accNo);
 
     }
     @GetMapping("/setKyc/{id}")
-    public Mono<AccountDetailsOutputDto> verifyKyc(@PathVariable Long id){
-        return accountServiceDetails.verifyKyc(id);
+    public Mono<AccountDetailsOutputDto> verifyKyc(@PathVariable(name = "id") Long accNo){
+        return accountServiceDetails.verifyKyc(accNo);
     }
 
 }

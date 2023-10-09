@@ -15,6 +15,10 @@ public class AccountDetailsOutputDto {
 
     private String email;
 
+    private Long balance;
+
+    private Boolean kyc;
+
     public Long getAccountNumber() {
         return accountNumber;
     }
@@ -55,9 +59,6 @@ public class AccountDetailsOutputDto {
         this.kyc = kyc;
     }
 
-    private Long balance;
-
-    private Boolean kyc;
 
 
 }

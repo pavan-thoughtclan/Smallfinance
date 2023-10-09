@@ -5,7 +5,7 @@ import lombok.Data;
 
 public class LoanInputDto {
 
-    private Long accountNumber;
+    private String accountNumber;
 
     private Double loanAmount;
 
@@ -13,11 +13,11 @@ public class LoanInputDto {
 
     private String tenure;
 
-    public Long getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(Long accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 

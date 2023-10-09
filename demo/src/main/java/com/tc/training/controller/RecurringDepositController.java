@@ -24,12 +24,12 @@ public class RecurringDepositController {
 
     }
 
-    @GetMapping("/getById")
-    public Mono<RecurringDepositOutputDto> getById(@RequestParam UUID id){
+    @GetMapping("/{id}")
+    public Mono<RecurringDepositOutputDto> getById(@PathVariable UUID id){
         return recurringDepositService.getById(id);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public Flux<RecurringDepositOutputDto> getAll(){
         return recurringDepositService.getAll();
     }

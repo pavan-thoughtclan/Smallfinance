@@ -24,8 +24,8 @@ public class LoanController {
         return loanService.addLoan(loanInputDto);
     }
 
-    @GetMapping("/getById")
-    public Mono<LoanOutputDto> getAll(@RequestParam UUID id){
+    @GetMapping("/{id}")
+    public Mono<LoanOutputDto> getAll(@PathVariable UUID id){
         return loanService.getById(id);
     }
 
@@ -34,7 +34,7 @@ public class LoanController {
         return loanService.getAllByUser(accNo);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public Flux<LoanOutputDto> getAll(){
         return loanService.getAll();
     }

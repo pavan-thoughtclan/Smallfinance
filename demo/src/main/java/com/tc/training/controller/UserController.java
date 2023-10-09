@@ -21,14 +21,14 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping("/getAll")
+    @GetMapping("")
     public Flux<UserOutputDto> getAllUsers(){
         return userService.getAll();
 
     }
 
-    @GetMapping("/getById")
-    public Mono<UserOutputDto> getById(@RequestParam UUID id){
+    @GetMapping("/{id}")
+    public Mono<UserOutputDto> getById(@PathVariable UUID id){
         return userService.getById(id);
     }
 

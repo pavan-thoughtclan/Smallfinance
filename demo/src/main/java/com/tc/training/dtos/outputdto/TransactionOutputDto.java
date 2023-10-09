@@ -1,9 +1,8 @@
 package com.tc.training.dtos.outputdto;
 
 import com.tc.training.utils.TransactionType;
-import com.tc.training.utils.TypeOfTransaction;
+import com.tc.training.utils.TypeOfSlab;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -25,7 +24,7 @@ public class TransactionOutputDto {
 
     private LocalDateTime timestamp;
 
-    private TypeOfTransaction whichTransaction;
+    private TypeOfSlab whichTransaction;
 
     private Double balance;
 
@@ -80,11 +79,11 @@ public class TransactionOutputDto {
         this.timestamp = timestamp;
     }
 
-    public TypeOfTransaction getWhichTransaction() {
+    public TypeOfSlab getWhichTransaction() {
         return whichTransaction;
     }
 
-    public void setWhichTransaction(TypeOfTransaction whichTransaction) {
+    public void setWhichTransaction(TypeOfSlab whichTransaction) {
         this.whichTransaction = whichTransaction;
     }
 

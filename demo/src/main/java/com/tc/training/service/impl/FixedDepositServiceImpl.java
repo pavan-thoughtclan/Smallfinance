@@ -16,7 +16,7 @@ import com.tc.training.repo.SlabRepository;
 import com.tc.training.service.FixedDepositService;
 import com.tc.training.service.TransactionService;
 import com.tc.training.utils.Tenures;
-import com.tc.training.utils.TypeOfTransaction;
+import com.tc.training.utils.TypeOfSlab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
                 .flatMap(account -> {
                     if(account.getKyc() == Boolean.FALSE) return Mono.error(new KycNotCompletedException("kyc not completed"));
                     if(account.getBalance() < fixedDepositInputDto.getAmount()) return Mono.error(new AmountNotSufficientException("amount not suffiecient to open fd"));
-                    return slabRepository.findByTenuresAndTypeOfTransaction(Tenures.valueOf(fixedDepositInputDto.getTenures()), TypeOfTransaction.FD)
+                    return slabRepository.findByTenuresAndTypeOfSlab(Tenures.valueOf(fixedDepositInputDto.getTenures()).toString(), TypeOfSlab.FD.toString())
                             .flatMap(slab  -> {
                                 fixedDeposit.setSlab_id(slab.getId());
                                 fixedDeposit.setDepositedDate(LocalDate.now());
@@ -150,7 +150,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
                         return performTransaction(fd, "CREDITED")
                                 .thenReturn(fd);
                     } else if (period.getMonths() > 1 && period.getMonths() < 3 && period.getYears() == 0) {
-                        return slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_MONTH, TypeOfTransaction.FD)
+                        return slabRepository.findByTenuresAndTypeOfSlab(Tenures.ONE_MONTH.toString(), TypeOfSlab.FD.toString())
                                 .switchIfEmpty(Mono.error(new RuntimeException("Slab not found")))
                                 .flatMap(slab -> {
                                     String interest;
@@ -165,7 +165,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
                                             .thenReturn(fd);
                                 });
                     } else if (period.getMonths() > 3 && period.getMonths() < 6 && period.getYears() == 0) {
-                        return slabRepository.findByTenuresAndTypeOfTransaction(Tenures.THREE_MONTHS, TypeOfTransaction.FD)
+                        return slabRepository.findByTenuresAndTypeOfSlab(Tenures.THREE_MONTHS.toString(), TypeOfSlab.FD.toString())
                                 .switchIfEmpty(Mono.error(new RuntimeException("Slab not found")))
                                 .flatMap(slab -> {
                                     String interest = "0";
@@ -180,7 +180,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
                                             .thenReturn(fd);
                                 });
                     } else if (period.getMonths() > 6 && period.getYears() == 0) {
-                        return slabRepository.findByTenuresAndTypeOfTransaction(Tenures.SIX_MONTHS, TypeOfTransaction.FD)
+                        return slabRepository.findByTenuresAndTypeOfSlab(Tenures.SIX_MONTHS.toString(), TypeOfSlab.FD.toString())
                                 .switchIfEmpty(Mono.error(new RuntimeException("Slab not found")))
                                 .flatMap(slab -> {
                                     String interest = "0";

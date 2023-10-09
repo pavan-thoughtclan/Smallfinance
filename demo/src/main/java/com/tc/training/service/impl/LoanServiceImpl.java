@@ -53,7 +53,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public Mono<LoanOutputDto> addLoan(LoanInputDto loanInputDto) {
 
-        return slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_YEAR, TypeOfTransaction.valueOf(loanInputDto.getType()))
+        return slabRepository.findByTenuresAndTypeOfSlab(Tenures.ONE_YEAR.toString(), TypeOfSlab.valueOf(loanInputDto.getType()).toString())
                 .flatMap(slabs -> {
                     Loan loan =  loanMapper.LoanInputDtoToLoan(loanInputDto);
                     loan.setSlab_id(slabs.getId());
