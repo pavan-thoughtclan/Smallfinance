@@ -18,14 +18,15 @@ public class AccountController {
 
     @Autowired
     private AccountServiceDetails accountServiceDetails;
+
     @PostMapping(value = "/create" ,consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<AccountDetailsOutputDto> createAccount(@RequestBody AccountDetailsInputDto accountDetails){
         AccountDetailsOutputDto createdAccount=accountServiceDetails.createAccount(accountDetails);
         return ResponseEntity.ok(createdAccount);
     }
-    @GetMapping("getAccountDetails")
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public AccountDetailsOutputDto getAccountDetails(@RequestParam Long accountNumber){
+    public AccountDetailsOutputDto getAccountDetails(@PathVariable(name="id") Long accountNumber){
         AccountDetailsOutputDto getAccount=accountServiceDetails.getAccount(accountNumber);
         return getAccount;
     }
@@ -46,6 +47,7 @@ public class AccountController {
     public HomePageOutputDto getHomePageDetails(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.getHomePageDetails(accNo);
     }
+
     @GetMapping("/setKyc/{id}")
     @PreAuthorize("hasRole('MANAGER')")
     public AccountDetailsOutputDto verifyKyc(@PathVariable(name="id") Long accNo){

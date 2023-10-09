@@ -12,13 +12,13 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 //    @Query(value = "select * from user where email = ?1",nativeQuery = true)
     User findByEmail(String userName);
-    @Query(value = "select * from user e where e.account_number = ?1",nativeQuery = true)
+    @Query(value = "select * from users e where e.account_number = ?1",nativeQuery = true)
     User findByAccountNumber(String accountNumber);
-    @Query(value = "select * from user e where e.first_name = ?1",nativeQuery = true)
+    @Query(value = "select * from users e where e.first_name = ?1",nativeQuery = true)
     User findByName(String userName);
-    @Query(value = "select * from user e where e.firebase_id = ?1",nativeQuery = true)
+    @Query(value = "select * from users e where e.firebase_id = ?1",nativeQuery = true)
     User findByFirebaseId(String user_id);
 
-    @Query(value = "SELECT * FROM \"user\" WHERE role_name = 'CUSTOMER'", nativeQuery = true)
+    @Query(value = "SELECT * FROM users WHERE role_name = 'CUSTOMER'", nativeQuery = true)
     List<User> findByRoleNameCustomer();
 }

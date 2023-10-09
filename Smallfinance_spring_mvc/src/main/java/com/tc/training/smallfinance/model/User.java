@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "users")
 @ToString(exclude = {"accountDetails"})
 public class User {
 
