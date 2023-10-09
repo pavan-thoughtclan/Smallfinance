@@ -48,26 +48,17 @@ public class FixedDepositServiceImpl implements FixedDepositService {
     private SlabRepository slabRepository;
     @Autowired
     private TransactionService transactionService;
-//    @Autowired
-//    private ModelMapper modelMapper;
-
     @Autowired
     private FixedDepositMapper fixedDepositMapper;
 
     @Override
     @Transactional
     public FixedDepositOutputDto createFixedDeposit(FixedDepositInputDto fixedDepositInputDto) {
-
-
-
         Double amount = fixedDepositInputDto.getAmount();
         AccountDetails accountNumber = accountRepository.findById(fixedDepositInputDto.getAccountNumber()).orElseThrow(()->new AccountNotFoundException("account  not found")); // add exception
-        //AccountDetails acc = accountServiceDetails.getAccount(fixedDepositInputDto.getAccountNumber());
         Tenures tenures = Tenures.valueOf(fixedDepositInputDto.getTenures());
-
         if(accountNumber.getKyc()==Boolean.FALSE) throw new KycNotCompletedException("Complete  your kyc");
         if(amount>accountNumber.getBalance()) throw new AmountNotSufficientException("amount exceeds account balance");
-
         FixedDeposit fixedDeposit = new FixedDeposit();
         fixedDeposit.setAccountNumber(accountNumber);
         fixedDeposit.setAmount(amount);
@@ -76,19 +67,12 @@ public class FixedDepositServiceImpl implements FixedDepositService {
         fixedDeposit.setMaturityDate(getOverDate(fixedDeposit.getSlabs(),fixedDeposit.getDepositedDate()));
         fixedDeposit.setTotalAmount(amount);
         fixedDeposit.setInterestRate(fixedDeposit.getSlabs().getInterestRate());
-       // fixedDeposit.getTransactionIds().add();
         performTransaction(fixedDeposit,"DEBIT");
         fixedDepositRepository.save(fixedDeposit);
-//        FixedDepositOutputDto fixedDepositOutputDto = modelMapper.map(fixedDeposit,FixedDepositOutputDto.class);
-//        FixedDepositOutputDto fixedDepositOutputDto = FixedDepositMapper.MAPPER.mapToFixedDepositOutputDto(fixedDeposit);
         FixedDepositOutputDto fixedDepositOutputDto =fixedDepositMapper.mapToFixedDepositOutputDto(fixedDeposit);
         fixedDepositOutputDto.setInterestRate(fixedDeposit.getSlabs().getInterestRate());
-
-
-
         return fixedDepositOutputDto;
     }
-
 
     private LocalDate getOverDate(Slabs slabs,LocalDate date) {
         Tenures tenure = slabs.getTenures();
@@ -101,7 +85,6 @@ public class FixedDepositServiceImpl implements FixedDepositService {
 
     @Override
     public List<FixedDepositOutputDto> getAllFixedDeposit(Long accNo) {
-//        return fixedDepositRepository.findByAccountNumber(accNo).stream().map(fd->modelMapper.map(fd, FixedDepositOutputDto.class)).collect(Collectors.toList());
         return fixedDepositRepository.findByAccountNumber(accNo).stream().map(fd->fixedDepositMapper.mapToFixedDepositOutputDto(fd)).collect(Collectors.toList());
     }
 
@@ -126,7 +109,6 @@ public class FixedDepositServiceImpl implements FixedDepositService {
         fd.setPreMatureWithdrawal(LocalDate.now());
         if(!fd.getIsActive()) throw new RuntimeException("This account is already closed");
         Period period = Period.between(fd.getDepositedDate(),LocalDate.now());
-
         String interest = "0";
         Double interestAmount=0D;
         if(period.getMonths()<1 && period.getYears()==0 ) {
@@ -147,16 +129,11 @@ public class FixedDepositServiceImpl implements FixedDepositService {
             interest = String.valueOf(Double.valueOf(interest)-1D);
             interestAmount = (fd.getAmount() * Double.valueOf(interest) * (period.getMonths())/6)/100;
         }
-
-
         fd.setInterestAmount(interestAmount);
         fd.getSlabs().setInterestRate(interest);
         fd.setTotalAmount(fd.getAmount()+interestAmount);
-
-      //  fd.getTransactionIds().add();
         closeAccount(fd);
         performTransaction(fd,"CREDIT");
-//        FixedDepositOutputDto fixedDepositOutputDto = modelMapper.map(fd,FixedDepositOutputDto.class);
         FixedDepositOutputDto fixedDepositOutputDto = fixedDepositMapper.mapToFixedDepositOutputDto(fd);
         fixedDepositOutputDto.setInterestRate(interest);
         fixedDepositOutputDto.setInterestAmountAdded(interestAmount);
@@ -165,15 +142,12 @@ public class FixedDepositServiceImpl implements FixedDepositService {
 
     @Override
     public List<FixedDepositOutputDto>  getAll() {
-//        return fixedDepositRepository.findAll().stream().map(fd->modelMapper.map(fd, FixedDepositOutputDto.class)).collect(Collectors.toList());
-        return fixedDepositRepository.findAll().stream().map(fd->fixedDepositMapper.mapToFixedDepositOutputDto(fd)).collect(Collectors.toList());
-
+         return fixedDepositRepository.findAll().stream().map(fd->fixedDepositMapper.mapToFixedDepositOutputDto(fd)).collect(Collectors.toList());
     }
 
     @Override
     public FixedDepositOutputDto getById(UUID id) {
        FixedDeposit fd = fixedDepositRepository.findById(id).orElseThrow(()-> new AccountNotFoundException("no account found with that id"));
-//        FixedDepositOutputDto fdout = modelMapper.map(fd,FixedDepositOutputDto.class);
         FixedDepositOutputDto fdout = fixedDepositMapper.mapToFixedDepositOutputDto(fd);
         return fdout;
     }
@@ -181,13 +155,11 @@ public class FixedDepositServiceImpl implements FixedDepositService {
     @Override
     public List<FixedDepositOutputDto> getAllActive(Long accNo) {
         List<FixedDeposit> fds = fixedDepositRepository.findByAccountNumberAndIsActive(accNo);
-//        return fds.stream().map(fd->modelMapper.map(fd, FixedDepositOutputDto.class)).collect(Collectors.toList());
         return fds.stream().map(fd->fixedDepositMapper.mapToFixedDepositOutputDto(fd)).collect(Collectors.toList());
     }
 
 
     private UUID performTransaction(FixedDeposit fd,String type) {
-
         TransactionInputDto transactionInputDto = new TransactionInputDto();
         transactionInputDto.setAmount(fd.getTotalAmount());
         transactionInputDto.setTo(Long.valueOf(String.valueOf(fd.getAccountNumber().getAccountNumber())));
@@ -196,7 +168,6 @@ public class FixedDepositServiceImpl implements FixedDepositService {
         transactionInputDto.setPurpose("FD amount "+type);
         transactionInputDto.setTrans(type);
         return transactionService.deposit(transactionInputDto,fd.getAccountNumber().getAccountNumber()).getTransactionID();
-
     }
 
     public void closeAccount(FixedDeposit fd){
@@ -206,39 +177,25 @@ public class FixedDepositServiceImpl implements FixedDepositService {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void mature(){
-
         logger.info("performing scheduled task");
-
         List<FixedDeposit> list = fixedDepositRepository.findAllByIsActive();
         LocalDate now = LocalDate.now();
-
         for(FixedDeposit fd:list){
-
             LocalDate maturityDate = fd.getMaturityDate();
             if(maturityDate.equals(now)) maturedAccount(fd);
-
         }
     }
+
     @Async
     public void maturedAccount(FixedDeposit fd){
-
-
-
         String interest = fd.getSlabs().getInterestRate();
         Double interestAmount = (fd.getAmount() * Double.valueOf(interest) * 1)/100;
         fd.setMaturityDate(LocalDate.now());
         fd.setInterestAmount(interestAmount);
         fd.setTotalAmount(fd.getAmount()+interestAmount);
         closeAccount(fd);
-
         performTransaction(fd,"credited");
-
         logger.info("fixed deposit with id "+fd.getId()+" is matured");
-
     }
-
-
-
-
 }
 

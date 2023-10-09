@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE "user" (
+CREATE TABLE users (
     id UUID default uuid_generate_v4() PRIMARY KEY,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
@@ -23,7 +23,7 @@ CREATE TABLE account_details (
     balance DOUBLE PRECISION DEFAULT 0.0,
     kyc BOOLEAN DEFAULT FALSE,
     user_id UUID,
-    FOREIGN KEY (user_id) REFERENCES "user"(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE slabs (
@@ -33,7 +33,7 @@ CREATE TABLE slabs (
     type_of_transaction VARCHAR(255)
 );
 
-CREATE TABLE "transaction" (
+CREATE TABLE transactions (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     amount DOUBLE PRECISION NOT NULL,
     transaction_type VARCHAR(255) NOT NULL,

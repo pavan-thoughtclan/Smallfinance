@@ -34,8 +34,6 @@ public class UserServiceImpl implements UserService {
     private TransactionService transactionService;
     @Autowired
     private EmailServiceImpl emailService;
-
-
     @Autowired
     private UserMapper userMapper;
 
@@ -56,15 +54,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-
     @Override
     public List<UserOutputDto> getAll() {
         List<User> userList = userRepository.findByRoleNameCustomer();
-//        System.out.println(userList);
         List<UserOutputDto> list = userList.stream()
                 .map(user -> userMapper.userToUserDto(user))
                 .collect(Collectors.toList());
-
         // Sort the list based on custom logic (not handled by MapStruct)
         list.sort((o1, o2) -> {
             User user1 = userRepository.findById(o1.getUserId()).orElseThrow(() -> new AccountNotFoundException("no account with this id"));
@@ -77,10 +72,8 @@ public class UserServiceImpl implements UserService {
                 return 0;
             }
         });
-
         return list;
     }
-
 
     @Override
     public UserOutputDto getById(UUID id) {
@@ -101,12 +94,10 @@ public class UserServiceImpl implements UserService {
     public static String generateRandomPassword() {
         StringBuilder password = new StringBuilder();
         Random random = new SecureRandom();
-
         for (int i = 0; i < 9; i++) {
             int randomIndex = random.nextInt(CHARACTERS.length());
             password.append(CHARACTERS.charAt(randomIndex));
         }
-
         return password.toString();
     }
 }

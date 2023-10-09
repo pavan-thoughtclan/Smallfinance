@@ -25,7 +25,6 @@ public class DepositServiceImpl implements DepositService {
 
     @Override
     public FDDetails getDetails(Long accNo) {
-
         FDDetails fdDetails = new FDDetails();
         List<FixedDepositOutputDto> fds = fixedDepositService.getAllActive(accNo);
         List<RecurringDepositOutputDto> rds = recurringDepositService.getByStatus(accNo);
@@ -43,18 +42,15 @@ public class DepositServiceImpl implements DepositService {
 
     @Override
     public List<Object> getAccounts(Long accNo) {
-
         List<Object> obj = new ArrayList<>();
         List<RecurringDepositOutputDto> rds = recurringDepositService.getByStatus(accNo);
         List<FixedDepositOutputDto> fds = fixedDepositService.getAllActive(accNo);
-
         for(FixedDepositOutputDto fdout:fds) {
             if(fdout.getIsActive()) obj.add(fdout);
         }
         for(RecurringDepositOutputDto rout:rds) {
             if(rout.getStatus().equals(RdStatus.ACTIVE)) obj.add(rout);
         }
-
         return obj;
     }
 }

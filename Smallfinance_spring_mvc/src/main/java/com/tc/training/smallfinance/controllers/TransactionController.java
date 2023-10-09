@@ -15,6 +15,7 @@ import java.util.List;
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
+
     @PostMapping("/transfer")
     @PreAuthorize("hasRole('CUSTOMER')")
     public TransactionOutputDto transfer(@RequestBody TransactionInputDto transactionInputDto, @RequestParam Long accNo){

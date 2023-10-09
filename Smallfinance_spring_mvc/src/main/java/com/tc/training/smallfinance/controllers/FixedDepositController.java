@@ -16,6 +16,7 @@ import java.util.UUID;
 public class FixedDepositController {
     @Autowired
     private FixedDepositService fixedDepositService;
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('CUSTOMER')")
     public FixedDepositOutputDto createFixedDeposit(@RequestBody  FixedDepositInputDto fixedDepositInputDto){
