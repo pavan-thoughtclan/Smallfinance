@@ -34,12 +34,12 @@ public class RecurringDepositController {
         return recurringDepositService.getAll();
     }
 
-
     @GetMapping("/getTotalMoneyInvested")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Double getTotalMoneyInvested(@RequestParam Long accNo){
         return recurringDepositService.getTotalMoneyInvested(accNo);
     }
+
     @GetMapping("getByStatus")
     @PreAuthorize("hasRole('MANAGER')")
     public List<RecurringDepositOutputDto> getByStatus(@RequestParam Long accNo){

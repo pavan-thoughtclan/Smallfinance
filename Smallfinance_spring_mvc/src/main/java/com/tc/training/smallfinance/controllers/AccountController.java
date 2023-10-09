@@ -24,12 +24,14 @@ public class AccountController {
         AccountDetailsOutputDto createdAccount=accountServiceDetails.createAccount(accountDetails);
         return ResponseEntity.ok(createdAccount);
     }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public AccountDetailsOutputDto getAccountDetails(@PathVariable(name="id") Long accountNumber){
         AccountDetailsOutputDto getAccount=accountServiceDetails.getAccount(accountNumber);
         return getAccount;
     }
+
     @GetMapping("/getBalance/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Double getBalance(@PathVariable(name="id") Long accNo){

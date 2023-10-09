@@ -43,7 +43,6 @@ public class LoanController {
     @PutMapping("/set")
     @PreAuthorize("hasRole('MANAGER')")
     public LoanOutputDto setLoan(@RequestParam UUID id,@RequestParam String status){
-//        System.out.println("hello");
        return loanService.setLoan(id,status);
     }
 

@@ -34,8 +34,6 @@ import java.util.*;
 
 @Service
 public class RecurringDepositServiceImpl implements RecurringDepositService {
-//    @Autowired
-//    private ModelMapper modelMapper;
     @Autowired
     private RecurringDepositRepository recurringDepositRepository;
     @Autowired
@@ -50,15 +48,12 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
     private TransactionService transactionService;
     @Autowired
     private EmailService emailService;
-
     @Autowired
     private RecurringDepositMapper recurringDepositMapper;
-
 
     @Override
     @Transactional
     public RecurringDepositOutputDto saveRd(RecurringDepositInputDto recurringDepositInputDto) {
-//        RecurringDeposit rd = modelMapper.map(recurringDepositInputDto, RecurringDeposit.class);
         RecurringDeposit rd = recurringDepositMapper.mapToRecurringDeposit(recurringDepositInputDto);
         rd.setAccountNumber(accountRepository.findById(recurringDepositInputDto.getAccountNumber()).orElseThrow(() -> new AccountNotFoundException("account with this id not found")));
         Slabs slab = slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_YEAR, TypeOfSlab.RD);
@@ -78,12 +73,10 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         rdPaymentRepository.save(rdPay);
         RecurringDepositOutputDto rdout = recurringDepositMapper.mapToRecurringDepositOutputDto(rd);
         rdout.setAccount(String.valueOf(rd.getAccountNumber().getAccountNumber()));
-
         return rdout;
     }
 
     private Double calculateMaturityAmount(RecurringDeposit rd,Integer noOfMonths) {
-
         Double p = rd.getMonthlyPaidAmount() ;
         Double r = Double.valueOf(rd.getInterest()) / 100;
         Integer t =  noOfMonths / 12;
@@ -91,14 +84,10 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         // Double amount = Math.pow(principal * (1 + quarterlyInterest) , (4 * years));
         Double amount = 0D;
         for(int i=noOfMonths;i>=0;i--){
-
             amount +=  p * Math.pow(( 1 + r/n) ,  ((i/12) * n));
-
         }
-
         return amount;
     }
-
 
     @Override
     public RecurringDepositOutputDto getById(UUID id) {
@@ -110,7 +99,6 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
 
     @Override
     public List<RecurringDepositOutputDto> getAll() {
-
         List<RecurringDeposit> rds = recurringDepositRepository.findAll();
         List<RecurringDepositOutputDto> rdouts = new ArrayList<>();
         for (RecurringDeposit r : rds) {
@@ -119,7 +107,6 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
             rdouts.add(rd);
         }
         Collections.sort(rdouts, new Comparator<RecurringDepositOutputDto>() {
-
             @Override
             public int compare(RecurringDepositOutputDto o1, RecurringDepositOutputDto o2) {
                 if (o1.getStatus().equals(RdStatus.ACTIVE) && o2.getStatus().equals(RdStatus.ACTIVE)) return 0;
@@ -171,18 +158,14 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
     }
 
     private UUID setTransaction(RecurringDeposit rd, String status, Double amount) {
-
         TransactionInputDto transaction = new TransactionInputDto();
         if (status.equals("CREDIT")) {
-            //transaction.setFrom(loan.getAccount());
             transaction.setType("RD");
-            // transaction.setAmount(loan.getLoanedAmount());
             transaction.setAmount(amount);
             transaction.setAccountNumber(Long.valueOf(String.valueOf(rd.getAccountNumber().getAccountNumber())));
             transaction.setTo(Long.valueOf(String.valueOf(rd.getAccountNumber().getAccountNumber())));
             transaction.setPurpose("RD amount credited");
         } else {
-            //transaction.setFrom(loan.getAccount());
             transaction.setType("RD");
             transaction.setAmount(amount);
             transaction.setAccountNumber(Long.valueOf(String.valueOf(rd.getAccountNumber().getAccountNumber())));
@@ -197,16 +180,11 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void scheduler() {
-
         List<RecurringDeposit> rdList = recurringDepositRepository.findByIsActive();
-
         for (RecurringDeposit rd : rdList) {
-
             Period period = Period.between(rd.getStartDate(), LocalDate.now());
             Integer month = period.getYears() * 12 + period.getMonths();
-
             if (!rd.getNextPaymentDate().equals(LocalDate.now())) continue;
-
             if (accountService.getBalance(rd.getAccountNumber().getAccountNumber()) > rd.getMonthlyPaidAmount()) {
                 RecurringDepositPayment rdPay = new RecurringDepositPayment();
                 rdPay.setRecurringDeposit(rd);
@@ -230,11 +208,9 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
                     rd.setTotalMissedPaymentCount(rd.getTotalMissedPaymentCount() + 1);
                     rdPaymentRepository.save(rdPay);
                 }
-
             }
             if (rd.getMaturityDate().equals(LocalDate.now())) closeAccount(rd, "matured");
             List<RecurringDepositPayment> payList = rdPaymentRepository.findAllByRecurringDeposit(rd);
-
             if (rd.getTotalMissedPaymentCount() > 3) {
                 closeAccount(rd, "closed");
                 Double total = 0D;
@@ -246,18 +222,13 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
                 total = calculateMaturityAmount(rd,payList.size()+1);
                 setTransaction(rd, "CREDIT", total);
             }
-
             recurringDepositRepository.save(rd);
         }
-
-
     }
 
     private void closeAccount(RecurringDeposit rd, String status) {
-
         if (status.equals("closed")) rd.setStatus(RdStatus.CLOSED);
         else rd.setStatus(RdStatus.MATURED);
-
         recurringDepositRepository.save(rd);
     }
 

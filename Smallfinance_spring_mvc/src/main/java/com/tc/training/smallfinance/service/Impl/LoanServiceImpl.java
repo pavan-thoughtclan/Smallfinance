@@ -127,10 +127,7 @@ public class LoanServiceImpl implements LoanService {
         Period period = Period.between(loan.getAppliedDate(),loan.getLoanEndDate());
         int months = period.getYears() * 12 + period.getMonths();
         if(status.equals("APPROVE") && loan.getStatus()==Status.UNDER_REVIEW) {
-//            System.out.println(status);
-//            System.out.println(id);
             loan.setStatus(Status.APPROVED);
-//            System.out.println(loan.getStatus());
             Double totalAmountToPay = (loan.getLoanedAmount()*(Double.valueOf(loan.getInterest())/100))*(months/12) + loan.getLoanedAmount();
             loan.setRemainingAmount(totalAmountToPay);
             loan.setStartDate(LocalDate.now());
