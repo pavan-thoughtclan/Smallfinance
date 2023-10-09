@@ -19,7 +19,7 @@ public class SlabController {
         return slabService.addSlab(slabInputDto);
     }
 
-    @GetMapping("/get_all")
+    @GetMapping("/getAll")
     public List<SlabOutputDto> getAllSlabs(){
         return slabService.getAllSlabs();
     }

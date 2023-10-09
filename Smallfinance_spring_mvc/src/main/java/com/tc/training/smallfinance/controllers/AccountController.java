@@ -23,29 +23,30 @@ public class AccountController {
         AccountDetailsOutputDto createdAccount=accountServiceDetails.createAccount(accountDetails);
         return ResponseEntity.ok(createdAccount);
     }
-    @GetMapping("get_account_details")
+    @GetMapping("getAccountDetails")
     @PreAuthorize("hasRole('CUSTOMER')")
     public AccountDetailsOutputDto getAccountDetails(@RequestParam Long accountNumber){
         AccountDetailsOutputDto getAccount=accountServiceDetails.getAccount(accountNumber);
         return getAccount;
     }
-    @GetMapping("/get_balance")
+    @GetMapping("/getBalance")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Double getBalance(@RequestParam Long accNo){
         return accountServiceDetails.getBalance(accNo);
     }
-    @GetMapping("/get_account_by_user")
+
+    @GetMapping("/getAccountByUser")
     @PreAuthorize("hasRole('CUSTOMER')")
     public AccountDetailsOutputDto getAccountByUser(@RequestParam UUID userId){
        return  accountServiceDetails.getAccountByUser(userId);
     }
 
-    @GetMapping("/home_page")
+    @GetMapping("/homePage")
     @PreAuthorize("hasRole('MANAGER')")
     public HomePageOutputDto getHomePageDetails(@RequestParam Long accNo){
         return accountServiceDetails.getHomePageDetails(accNo);
     }
-    @GetMapping("/set_kyc")
+    @GetMapping("/setKyc")
     @PreAuthorize("hasRole('MANAGER')")
     public AccountDetailsOutputDto verifyKyc(@RequestParam Long accNo){
         return accountServiceDetails.verifyKyc(accNo);

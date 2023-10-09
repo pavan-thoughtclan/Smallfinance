@@ -19,9 +19,7 @@ public class RecurringDepositController {
     @PostMapping("/save")
     @PreAuthorize("hasRole('CUSTOMER')")
     public RecurringDepositOutputDto saveRd(@RequestBody RecurringDepositInputDto recurringDepositInputDto){
-
         return recurringDepositService.saveRd(recurringDepositInputDto);
-
     }
 
     @GetMapping("/{id}")
@@ -30,19 +28,19 @@ public class RecurringDepositController {
         return recurringDepositService.getById(id);
     }
 
-    @GetMapping("/get_all")
+    @GetMapping("/getAll")
     @PreAuthorize("hasRole('MANAGER')")
     public List<RecurringDepositOutputDto> getAll(){
         return recurringDepositService.getAll();
     }
 
 
-    @GetMapping("/get_total_money_invested")
+    @GetMapping("/getTotalMoneyInvested")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Double getTotalMoneyInvested(@RequestParam Long accNo){
         return recurringDepositService.getTotalMoneyInvested(accNo);
     }
-    @GetMapping("get_by_status")
+    @GetMapping("getByStatus")
     @PreAuthorize("hasRole('MANAGER')")
     public List<RecurringDepositOutputDto> getByStatus(@RequestParam Long accNo){
         return recurringDepositService.getByStatus(accNo);

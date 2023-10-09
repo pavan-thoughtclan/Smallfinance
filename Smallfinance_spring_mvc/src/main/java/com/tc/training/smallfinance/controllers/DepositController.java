@@ -17,7 +17,7 @@ public class DepositController {
     @Autowired
     private DepositService  depositService;
 
-    @GetMapping("/get_details")
+    @GetMapping("/getDetails")
     @PreAuthorize("hasRole('CUSTOMER')")
     public FDDetails getDetails(@RequestParam Long accNo){
 

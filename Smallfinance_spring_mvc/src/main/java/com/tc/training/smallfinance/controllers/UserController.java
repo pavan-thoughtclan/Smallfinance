@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/get_all")
+    @GetMapping("/getAll")
     @PreAuthorize("hasRole('MANAGER')")
     public List<UserOutputDto> getAllUsers(){
         return userService.getAll();

@@ -16,7 +16,7 @@ import java.util.UUID;
 public class FixedDepositController {
     @Autowired
     private FixedDepositService fixedDepositService;
-    @PostMapping("/create_fixed_deposit")
+    @PostMapping("/createFixedDeposit")
     @PreAuthorize("hasRole('CUSTOMER')")
     public FixedDepositOutputDto createFixedDeposit(@RequestBody  FixedDepositInputDto fixedDepositInputDto){
         return fixedDepositService.createFixedDeposit(fixedDepositInputDto);
@@ -28,7 +28,7 @@ public class FixedDepositController {
         return fixedDepositService.getAllFixedDeposit(accNo);
     }
 
-    @GetMapping("/get_details")
+    @GetMapping("/getDetails")
     @PreAuthorize("hasRole('CUSTOMER')")
     public FDDetails getFDDetails(@RequestParam Long accNo){
         return fixedDepositService.getFDDetails(accNo);
@@ -40,7 +40,7 @@ public class FixedDepositController {
         return fixedDepositService.breakFixedDeposit(id);
     }
 
-    @GetMapping("/get_all")
+    @GetMapping("/getAll")
     @PreAuthorize("hasRole('MANAGER')")
     public List<FixedDepositOutputDto> getAll(){
        return fixedDepositService.getAll();
@@ -52,7 +52,7 @@ public class FixedDepositController {
         return fixedDepositService.getById(id);
     }
 
-    @GetMapping("/get_all_active")
+    @GetMapping("/getAllActive")
     @PreAuthorize("hasRole('MANAGER')")
     public List<FixedDepositOutputDto> getAllActive(Long accNo){
         return fixedDepositService.getAllActive(accNo);

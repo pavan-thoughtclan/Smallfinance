@@ -28,13 +28,13 @@ public class LoanController {
         return loanService.getById(id);
     }
 
-    @GetMapping("/get_all_by_user")
+    @GetMapping("/getAllByUser")
     @PreAuthorize("hasRole('MANAGER')")
     public List<LoanOutputDto> getAllByUser(@RequestParam(required = false) Long accNo){
         return loanService.getAllByUser(accNo);
     }
 
-    @GetMapping("/get_all")
+    @GetMapping("/getAll")
     @PreAuthorize("hasRole('CUSTOMER')")
     public List<LoanOutputDto> getAll(){
         return loanService.getAll();
@@ -46,39 +46,33 @@ public class LoanController {
        return loanService.setLoan(id,status);
     }
 
-    @GetMapping("/get_by_type")
+    @GetMapping("/getByType")
     @PreAuthorize("hasRole('CUSTOMER')")
     public List<LoanOutputDto> getByType(@RequestParam Long accNo , @RequestParam String type){
         return loanService.getBytype(accNo,type);
     }
 
-    @GetMapping("/get_total_loan_amount")
+    @GetMapping("/getTotalLoanAmount")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Double getTotalLoanAmount(@RequestParam Long accNo){
         return loanService.getTotalLoanAmount(accNo);
     }
 
-    @GetMapping("/get_all_pending")
+    @GetMapping("/getAllPending")
     @PreAuthorize("hasRole('MANAGER')")
     public List<LoanOutputDto> getAllPending(){
         return loanService.getAllPending();
     }
 
-    @GetMapping("/get_all_by_not_pending")
+    @GetMapping("/getAllByNotPending")
     @PreAuthorize("hasRole('MANAGER')")
     public List<LoanOutputDto> getAllByNotPending(){
         return loanService.getAllByNotPending();
     }
 
-    @GetMapping("/get_all_by_status")
+    @GetMapping("/getAllByStatus")
     @PreAuthorize("hasRole('MANAGER')")
     public List<LoanOutputDto> getAllByStatus(@RequestParam String status){
         return loanService.getAllByStatus(status);
     }
-
-//    @PutMapping(value = "/upload_suppliments/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-//    public void uploadSuppliment(@RequestParam MultipartFile file1, @RequestParam MultipartFile file2,  @PathVariable UUID id){
-//        loanService.uploadSuppliment(file1,file2,id);
-//    }
-
 }
