@@ -14,9 +14,6 @@ public interface UserService {
 
     public User addUser(AccountDetailsInputDto accountDetailsInputDto);
 
-
-    LoginOutputDto login(LoginInputDto loginInputDto);
-
     List<UserOutputDto> getAll();
 
     UserOutputDto getById(UUID id);

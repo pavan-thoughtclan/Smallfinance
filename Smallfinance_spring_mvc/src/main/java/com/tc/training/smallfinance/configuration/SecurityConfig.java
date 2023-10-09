@@ -1,8 +1,5 @@
 package com.tc.training.smallfinance.configuration;
 
-
-//import com.tc.training.smallfinance.jwt.JwtAuthenticationEntryPoint;
-//import com.tc.training.smallfinance.jwt.JwtAuthenticationFilter;
 import com.tc.training.smallfinance.model.User;
 import com.tc.training.smallfinance.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

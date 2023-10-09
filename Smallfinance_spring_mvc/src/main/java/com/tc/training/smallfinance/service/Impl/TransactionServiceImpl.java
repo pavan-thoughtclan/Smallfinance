@@ -14,7 +14,7 @@ import com.tc.training.smallfinance.repository.TransactionRepository;
 import com.tc.training.smallfinance.service.TransactionService;
 import com.tc.training.smallfinance.utils.TransactionType;
 import com.tc.training.smallfinance.utils.TypeOfSlab;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +30,6 @@ import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
-    @Autowired
-    private ModelMapper modelMapper;
     @Autowired
     private TransactionRepository transactionRepository;
     @Autowired
