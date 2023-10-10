@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.microFinance1.MicroFinance1Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 3.337 s <<< FAILURE! - in com.microFinance1.MicroFinance1Test
+com.microFinance1.MicroFinance1Test  Time elapsed: 3.336 s  <<< ERROR!
+io.micronaut.context.exceptions.BeanInstantiationException: 
+Error instantiating bean of type  [io.micronaut.transaction.test.DefaultTestTransactionExecutionListener]
+
+Message: Transaction mode is not supported when the synchronous transaction manager is created using Reactive transaction manager!
+Path Taken: new DefaultTestTransactionExecutionListener(SynchronousTransactionManager transactionManager,boolean rollback,TransactionMode transactionMode,SpockMethodTransactionDefinitionProvider spockMethodTransactionDefinitionProvider)
+Caused by: java.lang.IllegalStateException: Transaction mode is not supported when the synchronous transaction manager is created using Reactive transaction manager!
+
