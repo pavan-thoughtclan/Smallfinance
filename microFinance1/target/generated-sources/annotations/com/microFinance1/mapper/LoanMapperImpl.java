@@ -11,8 +11,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-10T20:18:09+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-10-11T15:15:06+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.35.0.v20230814-2020, environment: Java 17.0.8.1 (Eclipse Adoptium)"
 )
 @Singleton
 @Named
@@ -50,15 +50,15 @@ public class LoanMapperImpl implements LoanMapper {
             loanOutputDto.setAccountNumber( String.valueOf( loan.getAccountNumber() ) );
         }
         loanOutputDto.setAppliedDate( loan.getAppliedDate() );
-        loanOutputDto.setIsActive( loan.getIsActive() );
-        loanOutputDto.setStatus( loan.getStatus() );
-        loanOutputDto.setLoanedAmount( loan.getLoanedAmount() );
-        loanOutputDto.setTypeOfLoan( loan.getTypeOfLoan() );
-        loanOutputDto.setLoanEndDate( loan.getLoanEndDate() );
         loanOutputDto.setInterest( loan.getInterest() );
         loanOutputDto.setInterestAmount( loan.getInterestAmount() );
+        loanOutputDto.setIsActive( loan.getIsActive() );
+        loanOutputDto.setLoanEndDate( loan.getLoanEndDate() );
+        loanOutputDto.setLoanedAmount( loan.getLoanedAmount() );
         loanOutputDto.setMonthlyInterestAmount( loan.getMonthlyInterestAmount() );
+        loanOutputDto.setStatus( loan.getStatus() );
         loanOutputDto.setTotalAmount( loan.getTotalAmount() );
+        loanOutputDto.setTypeOfLoan( loan.getTypeOfLoan() );
 
         return loanOutputDto;
     }

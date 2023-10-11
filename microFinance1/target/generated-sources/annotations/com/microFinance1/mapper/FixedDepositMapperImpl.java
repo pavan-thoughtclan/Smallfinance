@@ -10,8 +10,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-10T20:18:09+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-10-11T15:15:06+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.35.0.v20230814-2020, environment: Java 17.0.8.1 (Eclipse Adoptium)"
 )
 @Singleton
 @Named
@@ -25,10 +25,10 @@ public class FixedDepositMapperImpl implements FixedDepositMapper {
 
         FixedDepositOutputDto fixedDepositOutputDto = new FixedDepositOutputDto();
 
+        fixedDepositOutputDto.setAccountNumber( fixedDeposit.getAccountNumber() );
         fixedDepositOutputDto.setAmount( fixedDeposit.getAmount() );
         fixedDepositOutputDto.setInterestRate( fixedDeposit.getInterestRate() );
         fixedDepositOutputDto.setIsActive( fixedDeposit.getIsActive() );
-        fixedDepositOutputDto.setAccountNumber( fixedDeposit.getAccountNumber() );
         fixedDepositOutputDto.setMaturityDate( fixedDeposit.getMaturityDate() );
         fixedDepositOutputDto.setTotalAmount( fixedDeposit.getTotalAmount() );
 

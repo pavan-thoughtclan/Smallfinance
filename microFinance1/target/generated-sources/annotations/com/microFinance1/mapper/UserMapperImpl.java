@@ -8,8 +8,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-10T20:18:09+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-10-11T15:15:06+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.35.0.v20230814-2020, environment: Java 17.0.8.1 (Eclipse Adoptium)"
 )
 @Singleton
 @Named
@@ -23,12 +23,12 @@ public class UserMapperImpl implements UserMapper {
 
         UserOutputDto userOutputDto = new UserOutputDto();
 
-        userOutputDto.setFirstName( user.getFirstName() );
-        userOutputDto.setLastName( user.getLastName() );
+        userOutputDto.setAadharCardNumber( user.getAadharCardNumber() );
+        userOutputDto.setAge( user.getAge() );
         userOutputDto.setDob( user.getDob() );
         userOutputDto.setEmail( user.getEmail() );
-        userOutputDto.setAge( user.getAge() );
-        userOutputDto.setAadharCardNumber( user.getAadharCardNumber() );
+        userOutputDto.setFirstName( user.getFirstName() );
+        userOutputDto.setLastName( user.getLastName() );
         userOutputDto.setPanCardNumber( user.getPanCardNumber() );
         userOutputDto.setPhoneNumber( user.getPhoneNumber() );
         userOutputDto.setRoleName( user.getRoleName() );

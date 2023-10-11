@@ -11,8 +11,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-10T20:18:09+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-10-11T15:15:05+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.35.0.v20230814-2020, environment: Java 17.0.8.1 (Eclipse Adoptium)"
 )
 @Singleton
 @Named
@@ -26,10 +26,10 @@ public class SlabMapperImpl implements SlabMapper {
 
         Slabs slabs = new Slabs();
 
+        slabs.setInterestRate( slabInputDto.getInterestRate() );
         if ( slabInputDto.getTenures() != null ) {
             slabs.setTenures( Enum.valueOf( Tenures.class, slabInputDto.getTenures() ) );
         }
-        slabs.setInterestRate( slabInputDto.getInterestRate() );
         if ( slabInputDto.getTypeOfTransaction() != null ) {
             slabs.setTypeOfTransaction( Enum.valueOf( TypeOfSlab.class, slabInputDto.getTypeOfTransaction() ) );
         }
@@ -45,10 +45,10 @@ public class SlabMapperImpl implements SlabMapper {
 
         SlabOutputDto slabOutputDto = new SlabOutputDto();
 
+        slabOutputDto.setInterestRate( slabs.getInterestRate() );
         if ( slabs.getTenures() != null ) {
             slabOutputDto.setTenures( slabs.getTenures().name() );
         }
-        slabOutputDto.setInterestRate( slabs.getInterestRate() );
         if ( slabs.getTypeOfTransaction() != null ) {
             slabOutputDto.setTypeOfTransaction( slabs.getTypeOfTransaction().name() );
         }
