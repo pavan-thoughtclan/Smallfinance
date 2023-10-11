@@ -19,7 +19,7 @@ public class AccountController {
     @Autowired
     private AccountServiceDetails accountServiceDetails;
 
-    @PostMapping(value = "/create" ,consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/create")
     public ResponseEntity<AccountDetailsOutputDto> createAccount(@RequestBody AccountDetailsInputDto accountDetails){
         AccountDetailsOutputDto createdAccount=accountServiceDetails.createAccount(accountDetails);
         return ResponseEntity.ok(createdAccount);

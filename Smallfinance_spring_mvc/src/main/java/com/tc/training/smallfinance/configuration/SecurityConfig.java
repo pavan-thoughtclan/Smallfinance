@@ -33,8 +33,8 @@ public class SecurityConfig {
     @Autowired
     UserRepository userRepository;
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
-    private String issuerUri;
+//    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
+//    private String issuerUri;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,11 +42,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/account/get_account_details",
-                                "/account/get_balance",
-                                "/account/get_account_by_user",
-                                "/account/home_page",
-                                "/account/set_kyc",
+                                "/account/{id}",
+                                "/account/getBalance",
+                                "/account/getAccountByUser",
+                                "/account/homePage",
+                                "/account/setKyc",
                                 "/loan/**",
                                 "/deposit/**",
                                 "/fd/**",
@@ -86,6 +86,7 @@ public class SecurityConfig {
             }
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(user.getRoleName().name()));
+            System.out.println(authorities);
             return (List<GrantedAuthority>) (List<?>) authorities;
         });
         return converter;
