@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
-public class SmallFinanceApplication {
+public class SmallFinanceApplication {//hello
 
 	public static void main(String[] args) {
 		SpringApplication.run(SmallFinanceApplication.class, args);
