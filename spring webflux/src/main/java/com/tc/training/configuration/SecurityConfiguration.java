@@ -38,9 +38,9 @@ public class SecurityConfiguration{
                             .pathMatchers(
                                     "/account/{id}",
                                     "/account/getBalance/{id}",
-                                    "/account/get_account_by_user",
-                                    "/account/home_page",
-                                    "/account/set_kyc",
+                                    "/account/getAccountByUser",
+                                    "/account/homePage/{id}",
+                                    "/account/setKyc/{id}",
                                     "/loan/**",
                                     "/deposit/**",
                                     "/fd/**",
