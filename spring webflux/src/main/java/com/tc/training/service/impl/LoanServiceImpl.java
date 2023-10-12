@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -112,6 +113,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    @Transactional
     public Mono<LoanOutputDto> setLoan(UUID id, String status) {
         return loanRepository.findById(id)
                 .switchIfEmpty(Mono.error(new AccountNotFoundException("no account with this id")))
@@ -215,93 +217,6 @@ public class LoanServiceImpl implements LoanService {
         return loanRepository.findByStatus(Status.valueOf(s))
                 .map(loanMapper::LoanToLoanOutputDto);
     }
-    @Scheduled(cron = "0 0 0 * * *")
-    private void diffSchedule() {
-        logger.info("entering");
-        loanRepository.findByIsActiveAndAccepted()
-                .filter(loan -> loan.getNextPaymentDate().equals(LocalDate.now()))
-                .flatMap(loan -> processLoan(loan))
-                .flatMap(loan -> loanRepository.save(loan));
 
-    }
 
-    private Mono<Loan> processLoan(Loan loan) {
-        logger.info("entering process loan");
-        Integer count = 0;
-        Double monthlyPay = Double.valueOf(loan.getMonthlyInterestAmount());
-        loan.setMonthlyInterestAmount((int) Math.round(monthlyPay));
-
-        return accountDetailsRepository.findById(loan.getAccount())
-                .flatMap(account -> {
-                    if(account.getBalance() >  monthlyPay){
-                            return processPayment(loan,account.getBalance());
-                    }
-                    else return handleMissPayment(loan);
-                });
-    }
-
-    private Mono<Loan> handleMissPayment(Loan loan) {
-
-        Period period = Period.between(loan.getStartDate(), LocalDate.now());
-        Period noOfMonths = Period.between(loan.getStartDate(), loan.getLoanEndDate());
-        Integer totalNoOfMonthsLeft = noOfMonths.getYears() * 12 + noOfMonths.getMonths();
-        Integer month = period.getYears() * 12 + period.getMonths();
-
-        if(period.getDays()!=0 && loan.getMissedPaymentCount()<4){
-            loan.setMonthlyInterestAmount((int) Math.round(loan.getMonthlyInterestAmount() * 0.1));
-            loan.setMissedPaymentCount(loan.getMissedPaymentCount()+1);
-            loan.setNextPaymentDate(loan.getNextPaymentDate().plusDays(3));
-        }
-        else if(period.getDays()==0 && loan.getMissedPaymentCount()<4){
-            loan.setNextPaymentDate(loan.getNextPaymentDate().plusDays(3));
-            loan.setMissedPaymentCount(loan.getMissedPaymentCount()+1);
-        }
-        else if(loan.getMissedPaymentCount()>3){
-            Repayment repayment = new Repayment();
-            repayment.setPayAmount(Double.valueOf(loan.getMonthlyInterestAmount()));
-            repayment.setLoan_id(loan.getId());
-            repayment.setMonthNumber(month);
-            repayment.setPaymentStatus(PaymentStatus.UNPAID);
-            repayment.setPenalty(Boolean.TRUE);
-            repaymentRepository.save(repayment);
-            loan.setNextPaymentDate(loan.getStartDate().plusMonths(month+1));
-            loan.setMissedPaymentCount(0);
-            return monthlyPayAmount(loan.getRemainingAmount(),totalNoOfMonthsLeft-month)
-                    .flatMap(amount -> {
-                        loan.setRemainingAmount(loan.getRemainingAmount() + loan.getMonthlyInterestAmount() - amount);
-                        loan.setMonthlyInterestAmount((int) Math.round(amount));
-                        loan.setTotalMissedPayments(loan.getTotalMissedPayments()+1);
-                        return Mono.just(loan);
-                    });
-        }
-
-        return Mono.just(loan);
-
-    }
-
-    private Mono<Loan> processPayment(Loan loan, Double balance) {
-        logger.info("entering processPayment");
-        Period period = Period.between(loan.getStartDate(), LocalDate.now());
-        Period noOfMonths = Period.between(loan.getStartDate(), loan.getLoanEndDate());
-        Integer totalNoOfMonthsLeft = noOfMonths.getYears() * 12 + noOfMonths.getMonths();
-        Integer month = period.getYears() * 12 + period.getMonths();
-        return setTransaction(loan, "DEBIT", Double.valueOf(loan.getMonthlyInterestAmount()))
-                .flatMap(transaction -> {
-                    Repayment repayment = new Repayment();
-                    repayment.setPayAmount(Double.valueOf(loan.getMonthlyInterestAmount()));
-                    repayment.setLoan_id(loan.getId());
-                    repayment.setMonthNumber(month);
-                    repayment.setTransactionId(transaction.getTransactionID());
-                    repayment.setPaymentStatus(PaymentStatus.PAID);
-                    repaymentRepository.save(repayment);
-                    loan.setRemainingAmount(loan.getRemainingAmount() - loan.getMonthlyInterestAmount());
-                    loan.setNextPaymentDate(loan.getStartDate().plusMonths(month+1));
-                    return monthlyPayAmount(loan.getRemainingAmount(), totalNoOfMonthsLeft - month - 1)
-                            .flatMap(amount -> {
-                                loan.setMonthlyInterestAmount((int) Math.round(amount));
-                                return Mono.just(loan);
-                            });
-
-                });
-    }
 }

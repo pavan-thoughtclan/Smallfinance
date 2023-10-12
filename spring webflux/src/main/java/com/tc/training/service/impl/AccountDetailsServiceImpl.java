@@ -60,9 +60,7 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
                                                         return Mono.just(accountDetails);
 
                                                     })
-                                                    .flatMap(account -> {
-                                                        return accountDetailsRepository.save(accountDetails);
-                                                    })
+                                                    .flatMap(account -> accountDetailsRepository.save(accountDetails))
                                                     .map(account -> {
                                                         account.setNew(Boolean.FALSE);
                                                         return account;
@@ -133,12 +131,5 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
 
     }
 
-    private Mono<Void> sendEmail(String email, String password,Long accountNumber) {
-        String subject = "Username and password for your account";
-        String text = "Thank you for registering with our bank your account number is "+accountNumber+ " and your password is "+password;
-        return Mono.fromRunnable(()->{
-            emailService.sendEmail(email,subject,text);
-        });
-    }
 
 }

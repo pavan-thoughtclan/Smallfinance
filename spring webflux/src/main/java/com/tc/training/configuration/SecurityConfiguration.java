@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -30,6 +32,7 @@ public class SecurityConfiguration{
     private UserRepository userRepository;
 
         @Bean
+        @Order(Ordered.HIGHEST_PRECEDENCE)
         public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) throws Exception {
 
             http.csrf(csrf -> csrf.disable())
@@ -73,7 +76,6 @@ public class SecurityConfiguration{
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Flux<GrantedAuthority> authoritiesFlux = reactiveAdapter.convert(jwt);
             String role = (String) jwt.getClaims().get("roles");
-            System.out.println(role );
             Flux<GrantedAuthority> authorities1 = Flux.just(new SimpleGrantedAuthority(role));
             return authorities1;
         });

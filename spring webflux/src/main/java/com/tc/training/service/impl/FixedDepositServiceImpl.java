@@ -20,6 +20,7 @@ import com.tc.training.utils.TypeOfSlab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,6 +45,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
 
 
     @Override
+    @Transactional
     public Mono<FixedDepositOutputDto> createFixedDeposit(FixedDepositInputDto fixedDepositInputDto) {
 
         FixedDeposit fixedDeposit = fixedDepositMapper.FixedDepositInputDtoToFixedDeposit(fixedDepositInputDto);
@@ -122,6 +124,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
 
 
     @Override
+    @Transactional
     public Mono<FixedDepositOutputDto> breakFixedDeposit(String uid) {
 
 
