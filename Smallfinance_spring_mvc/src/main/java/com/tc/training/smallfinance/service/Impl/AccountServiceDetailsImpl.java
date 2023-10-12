@@ -29,8 +29,6 @@ import java.util.*;
 @Service
 public class AccountServiceDetailsImpl implements AccountServiceDetails {
     @Autowired
-    private EmailService emailService;
-    @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private UserService userService;
@@ -57,7 +55,7 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
         accountDetails.setBalance(0D); // Set the initial balance to 0.0
         accountDetails.setKyc(false); // Set KYC to false by default
         try {
-            sendEmail(accountDetails.getUser().getEmail(), accountDetails.getUser().getPassword(), accountDetails.getAccountNumber());
+//            sendEmail(accountDetails.getUser().getEmail(), accountDetails.getUser().getPassword(), accountDetails.getAccountNumber());
             AccountDetailsOutputDto outputDto = accountDetailsMapper.mapToAccountDetailsOutputDto(accountDetails);
 
             outputDto.setEmail(accountDetails.getUser().getEmail());
@@ -119,13 +117,6 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
         return accountOutputDto;
     }
 
-    public AccountDetailsOutputDto updateAccount(AccountDetailsInputDto accountDetailsInputDto, Long accountNumber){
-        AccountDetails accountDetails = accountRepository.findById(accountNumber).orElseThrow(()-> new RuntimeException("account not found"));
-        AccountDetails accountDetails1 = accountDetailsMapper.mapToAccountDetails(accountDetailsInputDto);
-        accountDetailsMapper.mapToAccountDetails1(accountDetails1);
-        accountDetails1 = accountRepository.save(accountDetails1);
-        return accountDetailsMapper.mapToAccountDetailsOutputDto(accountDetails1);
-    }
 
     private synchronized Long generateUniqueAccountNumber() {
         List<AccountDetails> accountDetailsList = accountRepository.findAll();
@@ -134,21 +125,5 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
             lastTimestamp = accountDetailsList.get(accountDetailsList.size() - 1).getAccountNumber();
         }
         return ++lastTimestamp;
-    }
-
-    private void sendEmail(String email, String password,Long accountNumber) {
-        String subject = "Username and password for your account";
-        String text = "Thank you for registering with our bank your account number is "+accountNumber+ " and your password is "+password;
-        emailService.sendEmail(email,subject,text);
-    }
-
-    private String encode(MultipartFile file) {
-        String b64="";
-        try {
-            byte[] b = file.getBytes();
-            b64 = Base64.encodeBase64String(b);
-        }
-        catch(IOException e){}
-        return b64;
     }
 }

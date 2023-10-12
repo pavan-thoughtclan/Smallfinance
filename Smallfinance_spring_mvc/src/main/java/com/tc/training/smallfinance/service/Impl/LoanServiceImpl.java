@@ -10,7 +10,6 @@ import com.tc.training.smallfinance.model.*;
 import com.tc.training.smallfinance.repository.*;
 import com.tc.training.smallfinance.service.*;
 import com.tc.training.smallfinance.utils.*;
-//import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +35,12 @@ public class LoanServiceImpl implements LoanService {
     private SlabRepository slabRepository;
     @Autowired
     private LoanRepository loanRepository;
-//    @Autowired
-//    private ModelMapper modelMapper;
     @Autowired
     private TransactionService transactionService;
     @Autowired
     private UserService userService;
     @Autowired
     private AccountServiceDetails accountService;
-    @Autowired
-    private EmailService emailService;
     @Autowired
     private LoanMapper loanMapper;
 
@@ -54,28 +49,22 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public LoanOutputDto addLoan(LoanInputDto loanInputDto) {
-
         Loan loan = new Loan();
         loan.setLoanedAmount(loanInputDto.getLoanAmount());
         loan.setAccountNumber(accountRepository.findById(Long.valueOf(loanInputDto.getAccountNumber())).orElseThrow(()->new AccountNotFoundException("account not found")));
         loan.setAppliedDate(LocalDate.now());
         loan.setLoanEndDate(loan.getAppliedDate().plusYears(Integer.parseInt(loanInputDto.getTenure())));
-
         if(loanInputDto.getType().equals("GOLD_LOAN")){
-
             loan.setTypeOfLoan(TypeOfLoans.GOLD_LOAN);
             loan.setSlab(slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_YEAR, TypeOfSlab.GOLD_LOAN));
-
         }
         else if(loanInputDto.getType().equals("PERSONAL_LOAN")){
             loan.setTypeOfLoan(TypeOfLoans.PERSONAL_LOAN);
             loan.setSlab(slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_YEAR, TypeOfSlab.PERSONAL_LOAN));
-
         }
         else if(loanInputDto.getType().equals("EDUCATION_LOAN")){
             loan.setTypeOfLoan(TypeOfLoans.EDUCATION_LOAN);
             loan.setSlab(slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_YEAR, TypeOfSlab.EDUCATION_LOAN));
-
         }
         else if(loanInputDto.getType().equals("HOME_LOAN")) {
             loan.setTypeOfLoan(TypeOfLoans.HOME_LOAN);;
@@ -83,7 +72,6 @@ public class LoanServiceImpl implements LoanService {
         }
         loan.setInterest(loan.getSlab().getInterestRate());
         loanRepository.save(loan);
-//        return modelMapper.map(loan,LoanOutputDto.class);
         return loanMapper.mapToLoanOutputDto(loan);
     }
 
@@ -151,9 +139,7 @@ public class LoanServiceImpl implements LoanService {
         List<LoanOutputDto> typeLoanList = new ArrayList<>();
         TypeOfLoans loanType = TypeOfLoans.valueOf(type);
         for(Loan l : list){
-
             if(l.getTypeOfLoan().equals(loanType)) typeLoanList.add(loanMapper.mapToLoanOutputDto(l));
-
         }
         return typeLoanList;
     }
@@ -246,82 +232,66 @@ public class LoanServiceImpl implements LoanService {
     }
 
 
-    @Scheduled(cron = "0 0 0 * * *")
-    @Async
-    private void diffSchedule() {
-        logger.info("entered diff schedule");
-        List<Loan> loans = loanRepository.findByIsActiveAndAccepted();
-        for (Loan loan : loans) {
-            if(!loan.getNextPaymentDate().equals(LocalDate.now())) continue;
-            Period period = Period.between(loan.getStartDate(), LocalDate.now());
-            Period noOfMonths = Period.between(loan.getStartDate(), loan.getLoanEndDate());
-            Integer totalNoOfMonthsLeft = noOfMonths.getYears() * 12 + noOfMonths.getMonths();
-            Integer month = period.getYears() * 12 + period.getMonths();
-            Integer count = 0;
-            Double monthlyPay = Double.valueOf(loan.getMonthlyInterestAmount());   //monthlyPayAmount(loan.getRemainingAmount(), totalNoOfMonthsLeft - month - 1);
-            loan.setMonthlyInterestAmount((int) Math.round(monthlyPay));
-          //  if(loan.getRepayments() == null) loan.setRepayments(new ArrayList<>());
-
-            if (accountService.getBalance(loan.getAccountNumber().getAccountNumber()) > monthlyPay) {
-                Repayment repayment = new Repayment();
-                repayment.setPayAmount(monthlyPay);
-                repayment.setLoan(loan);
-                repayment.setMonthNumber(month);
-                repayment.setTransactionId(setTransaction(loan, "DEBIT", monthlyPay));
-                repayment.setPaymentStatus(PaymentStatus.PAID);
-                paymentRepository.save(repayment);
-                loan.setRemainingAmount(loan.getRemainingAmount() - loan.getMonthlyInterestAmount());
-                loan.setNextPaymentDate(loan.getStartDate().plusMonths(month+1));
-                loan.setMonthlyInterestAmount((int) Math.round(monthlyPayAmount(loan.getRemainingAmount(), totalNoOfMonthsLeft - month - 1)));
-            } else {
-                try {
-                    ResponseEntity rs = sendEmail(loan);
-                }catch(MyMailException e) {}
-                if(period.getDays()!=0 && loan.getMissedPaymentCount()<3){
-                    loan.setMonthlyInterestAmount((int) Math.round(loan.getMonthlyInterestAmount() * 0.1));
-                    loan.setMissedPaymentCount(loan.getMissedPaymentCount()+1);
-                    loan.setNextPaymentDate(loan.getNextPaymentDate().plusDays(3));
-                }
-                else if(period.getDays()==0 && loan.getMissedPaymentCount()<3){
-                    loan.setNextPaymentDate(loan.getNextPaymentDate().plusDays(3));
-                    loan.setMissedPaymentCount(loan.getMissedPaymentCount()+1);
-                }
-                else if(loan.getMissedPaymentCount()>3){
-                    Repayment repayment = new Repayment();
-                    repayment.setPayAmount(Double.valueOf(loan.getMonthlyInterestAmount()));
-                    repayment.setLoan(loan);
-                    repayment.setMonthNumber(month);
-                    repayment.setPaymentStatus(PaymentStatus.UNPAID);
-                    repayment.setPenalty(Boolean.TRUE);
-                    paymentRepository.save(repayment);
-                    loan.setNextPaymentDate(loan.getStartDate().plusMonths(month+1));
-                    loan.setMissedPaymentCount(0);
-                    Double pay = monthlyPayAmount(loan.getRemainingAmount(),totalNoOfMonthsLeft-month);
-                    loan.setRemainingAmount(loan.getRemainingAmount() + loan.getMonthlyInterestAmount() - pay);
-                    loan.setMonthlyInterestAmount((int) Math.round(monthlyPayAmount(loan.getRemainingAmount(),totalNoOfMonthsLeft - month - 1)));
-                    loan.setTotalMissedPayments(loan.getTotalMissedPayments()+1);
-                }
-
-            }
-            if(loan.getRemainingAmount().equals(Double.valueOf(0D))) closeLoan(loan);
-
-            loanRepository.save(loan);
-        }
-    }
-
-
-
-    private ResponseEntity sendEmail(Loan loan){
-        String to = loan.getAccountNumber().getUser().getEmail();
-        String subject = "Repayment of Loan";
-        String body = "As your balance is lesser than the emi "+loan.getMonthlyInterestAmount()+" please add money to your account within 3 days";
-        try {
-            emailService.sendEmail(to, subject, body);
-        }
-        catch(MailException e){ResponseEntity.badRequest();}
-        return new ResponseEntity(HttpStatusCode.valueOf(200));
-    }
-
-
-
+//    @Scheduled(cron = "0 0 0 * * *")
+//    @Async
+//    private void diffSchedule() {
+//        logger.info("entered diff schedule");
+//        List<Loan> loans = loanRepository.findByIsActiveAndAccepted();
+//        for (Loan loan : loans) {
+//            if(!loan.getNextPaymentDate().equals(LocalDate.now())) continue;
+//            Period period = Period.between(loan.getStartDate(), LocalDate.now());
+//            Period noOfMonths = Period.between(loan.getStartDate(), loan.getLoanEndDate());
+//            Integer totalNoOfMonthsLeft = noOfMonths.getYears() * 12 + noOfMonths.getMonths();
+//            Integer month = period.getYears() * 12 + period.getMonths();
+//            Integer count = 0;
+//            Double monthlyPay = Double.valueOf(loan.getMonthlyInterestAmount());   //monthlyPayAmount(loan.getRemainingAmount(), totalNoOfMonthsLeft - month - 1);
+//            loan.setMonthlyInterestAmount((int) Math.round(monthlyPay));
+//          //  if(loan.getRepayments() == null) loan.setRepayments(new ArrayList<>());
+//
+//            if (accountService.getBalance(loan.getAccountNumber().getAccountNumber()) > monthlyPay) {
+//                Repayment repayment = new Repayment();
+//                repayment.setPayAmount(monthlyPay);
+//                repayment.setLoan(loan);
+//                repayment.setMonthNumber(month);
+//                repayment.setTransactionId(setTransaction(loan, "DEBIT", monthlyPay));
+//                repayment.setPaymentStatus(PaymentStatus.PAID);
+//                paymentRepository.save(repayment);
+//                loan.setRemainingAmount(loan.getRemainingAmount() - loan.getMonthlyInterestAmount());
+//                loan.setNextPaymentDate(loan.getStartDate().plusMonths(month+1));
+//                loan.setMonthlyInterestAmount((int) Math.round(monthlyPayAmount(loan.getRemainingAmount(), totalNoOfMonthsLeft - month - 1)));
+//            } else {
+//                try {
+////                    ResponseEntity rs = sendEmail(loan);
+//                }catch(MyMailException e) {}
+//                if(period.getDays()!=0 && loan.getMissedPaymentCount()<3){
+//                    loan.setMonthlyInterestAmount((int) Math.round(loan.getMonthlyInterestAmount() * 0.1));
+//                    loan.setMissedPaymentCount(loan.getMissedPaymentCount()+1);
+//                    loan.setNextPaymentDate(loan.getNextPaymentDate().plusDays(3));
+//                }
+//                else if(period.getDays()==0 && loan.getMissedPaymentCount()<3){
+//                    loan.setNextPaymentDate(loan.getNextPaymentDate().plusDays(3));
+//                    loan.setMissedPaymentCount(loan.getMissedPaymentCount()+1);
+//                }
+//                else if(loan.getMissedPaymentCount()>3){
+//                    Repayment repayment = new Repayment();
+//                    repayment.setPayAmount(Double.valueOf(loan.getMonthlyInterestAmount()));
+//                    repayment.setLoan(loan);
+//                    repayment.setMonthNumber(month);
+//                    repayment.setPaymentStatus(PaymentStatus.UNPAID);
+//                    repayment.setPenalty(Boolean.TRUE);
+//                    paymentRepository.save(repayment);
+//                    loan.setNextPaymentDate(loan.getStartDate().plusMonths(month+1));
+//                    loan.setMissedPaymentCount(0);
+//                    Double pay = monthlyPayAmount(loan.getRemainingAmount(),totalNoOfMonthsLeft-month);
+//                    loan.setRemainingAmount(loan.getRemainingAmount() + loan.getMonthlyInterestAmount() - pay);
+//                    loan.setMonthlyInterestAmount((int) Math.round(monthlyPayAmount(loan.getRemainingAmount(),totalNoOfMonthsLeft - month - 1)));
+//                    loan.setTotalMissedPayments(loan.getTotalMissedPayments()+1);
+//                }
+//
+//            }
+//            if(loan.getRemainingAmount().equals(Double.valueOf(0D))) closeLoan(loan);
+//
+//            loanRepository.save(loan);
+//        }
+//    }
 }

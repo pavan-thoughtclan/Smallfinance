@@ -12,14 +12,12 @@ import com.tc.training.smallfinance.repository.RdPaymentRepository;
 import com.tc.training.smallfinance.repository.RecurringDepositRepository;
 import com.tc.training.smallfinance.repository.SlabRepository;
 import com.tc.training.smallfinance.service.AccountServiceDetails;
-import com.tc.training.smallfinance.service.EmailService;
 import com.tc.training.smallfinance.service.RecurringDepositService;
 import com.tc.training.smallfinance.service.TransactionService;
 import com.tc.training.smallfinance.utils.PaymentStatus;
 import com.tc.training.smallfinance.utils.RdStatus;
 import com.tc.training.smallfinance.utils.Tenures;
 import com.tc.training.smallfinance.utils.TypeOfSlab;
-//import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +44,6 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
     private AccountServiceDetails accountService;
     @Autowired
     private TransactionService transactionService;
-    @Autowired
-    private EmailService emailService;
     @Autowired
     private RecurringDepositMapper recurringDepositMapper;
 
@@ -178,69 +174,57 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
     }
 
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void scheduler() {
-        List<RecurringDeposit> rdList = recurringDepositRepository.findByIsActive();
-        for (RecurringDeposit rd : rdList) {
-            Period period = Period.between(rd.getStartDate(), LocalDate.now());
-            Integer month = period.getYears() * 12 + period.getMonths();
-            if (!rd.getNextPaymentDate().equals(LocalDate.now())) continue;
-            if (accountService.getBalance(rd.getAccountNumber().getAccountNumber()) > rd.getMonthlyPaidAmount()) {
-                RecurringDepositPayment rdPay = new RecurringDepositPayment();
-                rdPay.setRecurringDeposit(rd);
-                rdPay.setTransactionId(setTransaction(rd, "DEBIT", rd.getMonthlyPaidAmount()));
-                rdPay.setPaymentStatus(PaymentStatus.PAID);
-                rdPay.setPayAmount(rd.getMonthlyPaidAmount());
-                rdPay.setMonthNumber(month + 1);
-                rd.setNextPaymentDate(rd.getStartDate().plusMonths(month + 1));
-                rdPaymentRepository.save(rdPay);
-            } else {
-                if (rd.getMissedPayments() < 4) {
-                    rd.setNextPaymentDate(rd.getNextPaymentDate().plusDays(3));
-                    rd.setMissedPayments(rd.getMissedPayments()+1);
-                } else {
-                    RecurringDepositPayment rdPay = new RecurringDepositPayment();
-                    rdPay.setRecurringDeposit(rd);
-                    rdPay.setPaymentStatus(PaymentStatus.UNPAID);
-                    rdPay.setPayAmount(rd.getMonthlyPaidAmount());
-                    rdPay.setMonthNumber(month + 1);
-                    rd.setNextPaymentDate(rd.getStartDate().plusMonths(month + 1));
-                    rd.setTotalMissedPaymentCount(rd.getTotalMissedPaymentCount() + 1);
-                    rdPaymentRepository.save(rdPay);
-                }
-            }
-            if (rd.getMaturityDate().equals(LocalDate.now())) closeAccount(rd, "matured");
-            List<RecurringDepositPayment> payList = rdPaymentRepository.findAllByRecurringDeposit(rd);
-            if (rd.getTotalMissedPaymentCount() > 3) {
-                closeAccount(rd, "closed");
-                Double total = 0D;
-                for (RecurringDepositPayment rpay : payList) {
-                    total += rpay.getPayAmount();
-                }
-                /*total = total * (1 + (Double.valueOf(rd.getInterest()) / 4) * rd.getRdPayments().size());
-                total -= total * 0.2;*/
-                total = calculateMaturityAmount(rd,payList.size()+1);
-                setTransaction(rd, "CREDIT", total);
-            }
-            recurringDepositRepository.save(rd);
-        }
-    }
+//    @Scheduled(cron = "0 0 0 * * *")
+//    public void scheduler() {
+//        List<RecurringDeposit> rdList = recurringDepositRepository.findByIsActive();
+//        for (RecurringDeposit rd : rdList) {
+//            Period period = Period.between(rd.getStartDate(), LocalDate.now());
+//            Integer month = period.getYears() * 12 + period.getMonths();
+//            if (!rd.getNextPaymentDate().equals(LocalDate.now())) continue;
+//            if (accountService.getBalance(rd.getAccountNumber().getAccountNumber()) > rd.getMonthlyPaidAmount()) {
+//                RecurringDepositPayment rdPay = new RecurringDepositPayment();
+//                rdPay.setRecurringDeposit(rd);
+//                rdPay.setTransactionId(setTransaction(rd, "DEBIT", rd.getMonthlyPaidAmount()));
+//                rdPay.setPaymentStatus(PaymentStatus.PAID);
+//                rdPay.setPayAmount(rd.getMonthlyPaidAmount());
+//                rdPay.setMonthNumber(month + 1);
+//                rd.setNextPaymentDate(rd.getStartDate().plusMonths(month + 1));
+//                rdPaymentRepository.save(rdPay);
+//            } else {
+//                if (rd.getMissedPayments() < 4) {
+//                    rd.setNextPaymentDate(rd.getNextPaymentDate().plusDays(3));
+//                    rd.setMissedPayments(rd.getMissedPayments()+1);
+//                } else {
+//                    RecurringDepositPayment rdPay = new RecurringDepositPayment();
+//                    rdPay.setRecurringDeposit(rd);
+//                    rdPay.setPaymentStatus(PaymentStatus.UNPAID);
+//                    rdPay.setPayAmount(rd.getMonthlyPaidAmount());
+//                    rdPay.setMonthNumber(month + 1);
+//                    rd.setNextPaymentDate(rd.getStartDate().plusMonths(month + 1));
+//                    rd.setTotalMissedPaymentCount(rd.getTotalMissedPaymentCount() + 1);
+//                    rdPaymentRepository.save(rdPay);
+//                }
+//            }
+//            if (rd.getMaturityDate().equals(LocalDate.now())) closeAccount(rd, "matured");
+//            List<RecurringDepositPayment> payList = rdPaymentRepository.findAllByRecurringDeposit(rd);
+//            if (rd.getTotalMissedPaymentCount() > 3) {
+//                closeAccount(rd, "closed");
+//                Double total = 0D;
+//                for (RecurringDepositPayment rpay : payList) {
+//                    total += rpay.getPayAmount();
+//                }
+//                /*total = total * (1 + (Double.valueOf(rd.getInterest()) / 4) * rd.getRdPayments().size());
+//                total -= total * 0.2;*/
+//                total = calculateMaturityAmount(rd,payList.size()+1);
+//                setTransaction(rd, "CREDIT", total);
+//            }
+//            recurringDepositRepository.save(rd);
+//        }
+//    }
 
     private void closeAccount(RecurringDeposit rd, String status) {
         if (status.equals("closed")) rd.setStatus(RdStatus.CLOSED);
         else rd.setStatus(RdStatus.MATURED);
         recurringDepositRepository.save(rd);
-    }
-
-    private ResponseEntity sendEmail(RecurringDeposit rd) {
-        String to = rd.getAccountNumber().getUser().getEmail();
-        String subject = "Repayment of RD";
-        String body = "As your balance is lesser than the emi " + rd.getMonthlyPaidAmount() + " please add money to your account within 3 days";
-        try {
-            emailService.sendEmail(to, subject, body);
-        } catch (MailException e) {
-            ResponseEntity.badRequest();
-        }
-        return new ResponseEntity(HttpStatusCode.valueOf(200));
     }
 }

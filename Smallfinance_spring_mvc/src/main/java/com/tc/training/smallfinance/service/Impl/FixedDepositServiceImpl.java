@@ -175,16 +175,16 @@ public class FixedDepositServiceImpl implements FixedDepositService {
         fixedDepositRepository.save(fd);
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void mature(){
-        logger.info("performing scheduled task");
-        List<FixedDeposit> list = fixedDepositRepository.findAllByIsActive();
-        LocalDate now = LocalDate.now();
-        for(FixedDeposit fd:list){
-            LocalDate maturityDate = fd.getMaturityDate();
-            if(maturityDate.equals(now)) maturedAccount(fd);
-        }
-    }
+//    @Scheduled(cron = "0 0 0 * * *")
+//    public void mature(){
+//        logger.info("performing scheduled task");
+//        List<FixedDeposit> list = fixedDepositRepository.findAllByIsActive();
+//        LocalDate now = LocalDate.now();
+//        for(FixedDeposit fd:list){
+//            LocalDate maturityDate = fd.getMaturityDate();
+//            if(maturityDate.equals(now)) maturedAccount(fd);
+//        }
+//    }
 
     @Async
     public void maturedAccount(FixedDeposit fd){

@@ -33,8 +33,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TransactionService transactionService;
     @Autowired
-    private EmailServiceImpl emailService;
-    @Autowired
     private UserMapper userMapper;
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*";
