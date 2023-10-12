@@ -19,6 +19,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 //import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
     private static int sequence = 0;
 
     @Override
+    @Transactional
     public AccountDetailsOutputDto createAccount(AccountDetailsInputDto accountDetailsInputDto) {
         AccountDetails accountDetails = accountDetailsMapper.mapToAccountDetails(accountDetailsInputDto);
         accountDetails.setUser(userService.addUser(accountDetailsInputDto));

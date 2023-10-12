@@ -19,6 +19,7 @@ import org.springframework.mail.MailException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -43,8 +44,6 @@ public class LoanServiceImpl implements LoanService {
     private AccountServiceDetails accountService;
     @Autowired
     private LoanMapper loanMapper;
-
-
     Logger logger = LoggerFactory.getLogger(LoanServiceImpl.class);
 
     @Override
@@ -109,8 +108,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    @Transactional
     public LoanOutputDto setLoan(UUID id,String status) {
-
         Loan loan = loanRepository.findById(id).orElseThrow(()->new AccountNotFoundException("account not found"));
         Period period = Period.between(loan.getAppliedDate(),loan.getLoanEndDate());
         int months = period.getYears() * 12 + period.getMonths();
@@ -166,8 +165,6 @@ public class LoanServiceImpl implements LoanService {
         return loans.stream().map(loan -> loanMapper.mapToLoanOutputDto(loan)).collect(Collectors.toList());
     }
 
-
-
     @Override
     public List<LoanOutputDto> getAllByStatus(String s) {
         Status status = Status.valueOf(s);
@@ -183,7 +180,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private Loan closeLoan(Loan loan) {
-
         loan.setIsActive(Boolean.FALSE);
         loan.setLoanEndDate(LocalDate.now());
         if(loan.getStatus().equals(Status.REJECTED)) {
@@ -194,7 +190,6 @@ public class LoanServiceImpl implements LoanService {
            // loan.setInterestAmount(loan.getLoanedAmount()*Double.valueOf(loan.getInterest())/(loan.getRepayments().size()/12) - loan.getLoanedAmount());
             loan.setTotalAmount(loan.getLoanedAmount() + loan.getInterestAmount());
         }
-
         loan.setMonthlyInterestAmount(0);
         return loan;
     }
