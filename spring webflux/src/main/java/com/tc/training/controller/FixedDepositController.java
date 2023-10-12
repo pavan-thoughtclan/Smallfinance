@@ -26,7 +26,7 @@ public class FixedDepositController {
     }
 
     @GetMapping("/getAllByUser")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Flux<FixedDepositOutputDto> getAllFixedDeposit(@RequestParam Long accNo){
         return fixedDepositService.getAllFixedDeposit(accNo);
     }
@@ -51,13 +51,13 @@ public class FixedDepositController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Mono<FixedDepositOutputDto> getById(@PathVariable UUID id){
         return fixedDepositService.getById(id);
     }
 
     @GetMapping("/getAllActive")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Flux<FixedDepositOutputDto> getAllActive(@RequestParam Long accNo){
         return fixedDepositService.getAllActive(accNo);
     }

@@ -1,6 +1,7 @@
 package com.tc.training.configuration;
 
 import com.tc.training.repo.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ import reactor.core.publisher.Mono;
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Slf4j
 public class SecurityConfiguration{
 
     @Autowired
@@ -71,20 +72,10 @@ public class SecurityConfiguration{
         converter.setJwtGrantedAuthoritiesConverter(reactiveAdapter);
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Flux<GrantedAuthority> authoritiesFlux = reactiveAdapter.convert(jwt);
-            String email = (String) jwt.getClaims().get("email");
-            System.out.println("hello");
-            System.out.println(email);
-
-            // Load user details from the userDetailsService in a reactive way
-            return userRepository.findByEmail(email)
-                    .flatMapMany(user -> {
-                        Flux<GrantedAuthority> authorities1 = Flux.just(new SimpleGrantedAuthority(user.getRoleName().toString()));
-                        authorities1.subscribe(System.out::println);
-                        Flux<GrantedAuthority> newFlux = Flux.concat(authoritiesFlux, authorities1);
-//                        newFlux.subscribe(System.out::println);
-                        return authorities1;
-                    })
-                    .switchIfEmpty(Mono.error(new UsernameNotFoundException("User not found with username: " + email)));
+            String role = (String) jwt.getClaims().get("roles");
+            System.out.println(role );
+            Flux<GrantedAuthority> authorities1 = Flux.just(new SimpleGrantedAuthority(role));
+            return authorities1;
         });
         return converter;
     }

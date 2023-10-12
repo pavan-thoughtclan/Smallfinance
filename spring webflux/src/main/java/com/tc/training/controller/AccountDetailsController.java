@@ -22,7 +22,7 @@ public class AccountDetailsController {
     private AccountDetailsService accountServiceDetails;
 
     @GetMapping("/getBalance/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Mono<Double> getBalance(@PathVariable Long id){
 
         return accountServiceDetails.getBalance(id);

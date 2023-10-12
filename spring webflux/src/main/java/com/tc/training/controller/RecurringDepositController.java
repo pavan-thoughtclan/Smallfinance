@@ -27,7 +27,7 @@ public class RecurringDepositController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Mono<RecurringDepositOutputDto> getById(@PathVariable UUID id){
         return recurringDepositService.getById(id);
     }

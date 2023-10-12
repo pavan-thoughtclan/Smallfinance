@@ -27,13 +27,13 @@ public class LoanController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Mono<LoanOutputDto> getAll(@PathVariable UUID id){
         return loanService.getById(id);
     }
 
     @GetMapping("/getAllByUser")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Flux<LoanOutputDto> getAllByUser(@RequestParam Long accNo){
         return loanService.getAllByUser(accNo);
     }

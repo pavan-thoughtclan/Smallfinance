@@ -43,18 +43,9 @@ public class UserServiceImpl implements UserService {
 
     public Mono<User> addUser(AccountDetailsInputDto accountDetailsInputDto) {
 
-
         return calculateAge(accountDetailsInputDto.getDob())
                 .flatMap(age -> {
-                    User user = new User();
-                    user.setAge(age);
-                    user.setFirstName(accountDetailsInputDto.getFirstName());
-                    user.setLastName(accountDetailsInputDto.getLastName());
-                    user.setDob(accountDetailsInputDto.getDob());
-                    user.setEmail(accountDetailsInputDto.getEmail());
-                    user.setPanCardNumber(accountDetailsInputDto.getPanCardNumber());
-                    user.setAadharCardNumber(accountDetailsInputDto.getAadharCardNumber());
-                    user.setPhoneNumber(accountDetailsInputDto.getPhoneNumber());
+                    User user = userMapper.accountInputDtoToUser(accountDetailsInputDto);
                     return generateRandomPassword()
                             .map(password -> {
                                 user.setPassword(password);
