@@ -1,0 +1,74 @@
+micronaut:
+  application:
+    name: smallfinance
+  server:
+    port: 8080
+hibernate:
+  ddl-auto: none
+datasources:
+  default:
+    driver-class-name: org.postgresql.Driver
+    db-type: postgres
+    dialect: POSTGRES
+    url: jdbc:postgresql://localhost:5432/small_finance
+    username: postgres
+    password: system
+    schema-generate: none
+  security:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/small_finance
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: system
+hikari:
+  maximumPoolSize: 10
+  jdbcUrl: jdbc:postgresql://localhost:5432/small_finance
+  username: postgres
+  password: system
+  maxLifetime: 1800000  # 30 minutes (in milliseconds)
+
+
+security:
+    token:
+      jwt:
+        signatures:
+          jwks:
+            mock:
+              url: http://localhost:8081/.well-known/jwks.json
+        claims-validators:
+          expiration: true
+    authentication: bearer
+
+
+
+
+
+
+
+#flyway:
+#  datasources:
+#    default:
+#      enabled: true
+#      url: jdbc:postgresql://localhost:5432/small_finance
+#      username: postgres
+#      password: root
+#  locations: classpath:db/migration
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+      url: jdbc:postgresql://localhost:5432/small_finance
+      username: postgres
+      password: system
+  locations: classpath:db/migration
+  baselineOnMigrate: true
+
+
+
+netty:
+  default:
+    allocator:
+      max-order: 3
+
+
