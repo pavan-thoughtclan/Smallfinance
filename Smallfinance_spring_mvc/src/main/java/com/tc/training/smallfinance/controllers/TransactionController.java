@@ -19,7 +19,6 @@ public class TransactionController {
     @PostMapping("/transfer")
     @PreAuthorize("hasRole('CUSTOMER')")
     public TransactionOutputDto transfer(@RequestBody TransactionInputDto transactionInputDto, @RequestParam Long accNo){
-
         return transactionService.deposit(transactionInputDto,accNo);
     }
 

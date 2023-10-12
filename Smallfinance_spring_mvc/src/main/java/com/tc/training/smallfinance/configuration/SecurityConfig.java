@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -52,11 +53,11 @@ public class SecurityConfig {
                                 "/fd/**",
                                 "/rd/**",
                                 "/transaction/**",
-                                "/users/**"
+                                "/users/**",
+                                "/slab/**"
                         ).authenticated()
                         .requestMatchers(
-                                "/account/create",
-                                "/slab/**"
+                                "/account/create"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -67,45 +68,50 @@ public class SecurityConfig {
                 );
                 return http.build();
     }
+
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-
-        // Convert "roles" claim to authorities with the "ROLE_" prefix
-        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
-//        authoritiesConverter.setAuthoritiesClaimName("roles");
-//        authoritiesConverter.setAuthorityPrefix("ROLE_");
-
-        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            Collection<GrantedAuthority> authorities1 = authoritiesConverter.convert(jwt);
-            String email = (String) jwt.getClaims().get("email");
-            User user = userRepository.findByEmail(email);
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found with username: " + email);
-            }
-            List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(user.getRoleName().name()));
-            System.out.println(authorities);
-            return (List<GrantedAuthority>) (List<?>) authorities;
+            String role = (String) jwt.getClaims().get("roles");
+            List<SimpleGrantedAuthority> userAuthorities = new ArrayList<>();
+            userAuthorities.add(new SimpleGrantedAuthority(role));
+            return  (List<GrantedAuthority>) (List<?>)userAuthorities;
         });
         return converter;
     }
 
-
-
 //    @Bean
-//    JwtDecoder jwtDecoder() {
-//        NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
-//                JwtDecoders.fromIssuerLocation(issuerUri);
+//    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+//        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
 //
-//        OAuth2TokenValidator<Jwt> withClockSkew = new DelegatingOAuth2TokenValidator<>(
-//                new JwtTimestampValidator(Duration.ofSeconds(60)),
-//                new JwtIssuerValidator(issuerUri));
+//        // Convert "roles" claim to authorities with the "ROLE_" prefix
+//        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+//        authoritiesConverter.setAuthoritiesClaimName("roles");
+//        authoritiesConverter.setAuthorityPrefix("ROLE_");
 //
-//        jwtDecoder.setJwtValidator(withClockSkew);
+//        converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
 //
-//        return jwtDecoder;
+//        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+//            Collection<GrantedAuthority> authorities = authoritiesConverter.convert(jwt);
+//            System.out.println("User Roles: " + authorities);
+//
+//            // Extract the email claim from the JWT
+//            String email = (String) jwt.getClaims().get("email");
+//            System.out.println("User Email: " + email);
+//
+//            // You can access the roles directly from the authorities
+//            List<SimpleGrantedAuthority> userAuthorities = authorities.stream()
+//                    .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
+//                    .collect(Collectors.toList());
+//
+//            System.out.println("User Authorities: " + userAuthorities);
+//
+//            return userAuthorities;
+//        });
+//
+//        return converter;
 //    }
+
 }
 
