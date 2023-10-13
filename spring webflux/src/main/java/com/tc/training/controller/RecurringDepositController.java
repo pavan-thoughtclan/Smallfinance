@@ -13,12 +13,12 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/rd")
+@RequestMapping("/rds")
 public class RecurringDepositController {
     @Autowired
     private RecurringDepositService recurringDepositService;
 
-    @PostMapping("/save")
+    @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Mono<RecurringDepositOutputDto> saveRd(@RequestBody RecurringDepositInputDto recurringDepositInputDto){
 

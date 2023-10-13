@@ -15,12 +15,12 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/loan")
+@RequestMapping("/loans")
 public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @PostMapping("/apply")
+    @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Mono<LoanOutputDto> addLoan(@RequestBody LoanInputDto loanInputDto){
         return loanService.addLoan(loanInputDto);
