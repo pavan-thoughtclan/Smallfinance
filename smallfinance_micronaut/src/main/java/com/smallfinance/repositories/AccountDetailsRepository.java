@@ -12,7 +12,8 @@ import java.util.UUID;
 @Repository
 public interface AccountDetailsRepository extends JpaRepository<AccountDetails, Long> {
 //    @Query("SELECT ad FROM AccountDetails ad WHERE ad.user = :user")
-    AccountDetails findByUserId(UUID userId);
+@Query(value = "select * from account_details where user_id = :userId",nativeQuery = true)
+AccountDetails findByUserId(UUID userId);
 
    @Override
    List<AccountDetails> findAll();

@@ -13,6 +13,7 @@ import com.smallfinance.services.TransactionService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,6 +21,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class provides the implementation of the TransactionService interface for all Transaction operations.
+ */
 @Singleton
 public class TransactionServiceImpl implements TransactionService {
 
@@ -32,13 +36,29 @@ public class TransactionServiceImpl implements TransactionService {
     @Inject
     private final TransactionMapper transactionMapper;
 
+    /**
+     * Constructs a new instance of the TransactionServiceImpl class.
+     *
+     * @param accountDetailsRepository   Repository for account details.
+     * @param transactionRepository      Repository for financial transactions.
+     * @param transactionMapper          Mapper for converting transaction data transfer objects.
+     */
     public TransactionServiceImpl(AccountDetailsRepository accountDetailsRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
         this.accountDetailsRepository = accountDetailsRepository;
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
     }
 
+    /**
+     * Handles deposit transactions, updating account balances and transaction records.
+     * Additionally, it checks the account's KYC status and performs account balance validations.
+     *
+     * @param transactionInputDto   Input data for the transaction.
+     * @param accountNumber         Account number for the transaction.
+     * @return                      TransactionOutput- Details of the completed transaction.
+     */
     @Override
+    @Transactional
     public TransactionOutput deposit(TransactionInput transactionInputDto, Long accountNumber) {
         Transaction transaction = transactionMapper.mapToTransaction(transactionInputDto);
         transaction.setTimestamp(LocalDateTime.now());
@@ -152,6 +172,16 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
+    /**
+     * Retrieves a list of transactions within a specified date range and optional type
+     * for a specific account.
+     *
+     * @param date1     Start date of the date range.
+     * @param date2     End date of the date range.
+     * @param type      Type of transaction (optional).
+     * @param accNo     Account number for which transactions are retrieved.
+     * @return          List of filtered transactions within the date range.
+     */
     @Override
     public List<TransactionOutput> getAllTransactions(LocalDate date1, LocalDate date2, String type, Long accNo) {
         AccountDetails account = accountDetailsRepository.findById(accNo)

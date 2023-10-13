@@ -11,6 +11,9 @@ import jakarta.inject.Singleton;
 
 import java.util.List;
 
+/**
+ * Service implementation for managing Slab operations.
+ */
 @Singleton
 public class SlabServiceImpl implements SlabService {
     @Inject
@@ -19,6 +22,12 @@ public class SlabServiceImpl implements SlabService {
     @Inject
     private SlabRepository slabRepository;
 
+    /**
+     * Add a new slab based on the provided input.
+     *
+     * @param slabInputDto The input data for creating a new slab.
+     * @return SlabOutput containing information about the created slab.
+     */
     @Override
     public SlabOutput addSlab(SlabInput slabInputDto) {
         Slabs slabs = slabMapper.mapToSlabs(slabInputDto);
@@ -26,6 +35,11 @@ public class SlabServiceImpl implements SlabService {
         return slabMapper.mapToSlabOutputDto(savedSlabs);
     }
 
+    /**
+     * Get a list of all slabs.
+     *
+     * @return A list of SlabOutput objects containing information about all slabs.
+     */
     @Override
     public List<SlabOutput> getAll() {
         return slabRepository.findAll().stream()

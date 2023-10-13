@@ -19,9 +19,13 @@ import com.smallfinance.services.TransactionService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Service implementation for managing RecurringDepositService operations.
+ */
 @Singleton
 public class RecurringDepositServiceImpl implements RecurringDepositService {
     @Inject
@@ -45,7 +49,15 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         this.recurringDepositMapper = recurringDepositMapper;
         this.recurringDepositPaymentRepository = recurringDepositPaymentRepository;
     }
+
+    /**
+     * Create a recurring deposit account based on the provided input.
+     *
+     * @param recurringDepositInputDto The input data for creating a recurring deposit.
+     * @return RecurringDepositOutput containing information about the created recurring deposit account.
+     */
     @Override
+    @Transactional
     public RecurringDepositOutput create(RecurringDepositInput recurringDepositInputDto) {
         RecurringDeposit rd = recurringDepositMapper.mapToRecurringDeposit(recurringDepositInputDto);
         rd.setAccountNumber(accountDetailsRepository.findById(recurringDepositInputDto.getAccountNumber()).orElseThrow(() -> new RuntimeException("account with this id not found")));
@@ -82,6 +94,12 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         return amount;
     }
 
+    /**
+     * Get a recurring deposit account by its ID.
+     *
+     * @param id The id of the recurring deposit account.
+     * @return RecurringDepositOutput containing information about the specified recurring deposit account.
+     */
     @Override
     public RecurringDepositOutput getById(UUID id) {
         RecurringDeposit rd = recurringDepositRepository.findById(id).orElseThrow(() -> new RuntimeException("rd account not found"));
@@ -90,6 +108,11 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         return rdout;
     }
 
+    /**
+     * Get a list of all recurring deposit accounts.
+     *
+     * @return A list of RecurringDepositOutput objects containing information about all recurring deposit accounts.
+     */
     @Override
     public List<RecurringDepositOutput> getAll() {
         List<RecurringDeposit> rds = recurringDepositRepository.findAll();
@@ -112,6 +135,12 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
     }
 
 
+    /**
+     * Get a list of recurring deposit accounts for a specific account number.
+     *
+     * @param accNo The account number .
+     * @return A list of RecurringDepositOutput for the specified account.
+     */
     @Override
     public List<RecurringDepositOutput> getAllRecurringDeposit(Long accNo) {
         List<RecurringDeposit> rdList = recurringDepositRepository.findByAccount(accNo);
@@ -124,6 +153,12 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         return rdoutList;
     }
 
+    /**
+     * Calculate the total amount of money invested in recurring deposit accounts for a specific account number.
+     *
+     * @param accNo The account number .
+     * @return The total amount of money invested in recurring deposit accounts.
+     */
     @Override
     public Double getTotalMoneyInvested(Long accNo) {
         List<RecurringDeposit> rds = recurringDepositRepository.findByAccountAndStatus(accNo,RdStatus.ACTIVE.name());
@@ -138,6 +173,12 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         return sum;
     }
 
+    /**
+     * Get a list of active recurring deposit accounts for a specific account number.
+     *
+     * @param accNo The account number .
+     * @return A list of RecurringDepositOutput
+     */
     @Override
     public List<RecurringDepositOutput> getByStatus(Long accNo) {
         List<RecurringDeposit> rdList = recurringDepositRepository.findByAccountAndStatus(accNo, RdStatus.ACTIVE.name());
@@ -150,7 +191,16 @@ public class RecurringDepositServiceImpl implements RecurringDepositService {
         return rdoutList;
     }
 
-    private UUID setTransaction(RecurringDeposit rd, String status, Double amount) {
+    /**
+     * Set a transaction for a recurring deposit account (credit or debit).
+     *
+     * @param rd The recurring deposit account for which the transaction is being set.
+     * @param status The status of the transaction (CREDIT or DEBIT).
+     * @param amount The amount involved in the transaction.
+     * @return The unique identifier of the transaction.
+     */
+    @Transactional
+    protected UUID setTransaction(RecurringDeposit rd, String status, Double amount) {
         TransactionInput transaction = new TransactionInput();
         if (status.equals("CREDIT")) {
             transaction.setType("RD");

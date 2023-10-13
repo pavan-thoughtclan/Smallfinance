@@ -1,4 +1,14 @@
 micronaut:
+  security:
+    token:
+      jwt:
+        signatures:
+          jwks:
+            mock:
+              url: http://localhost:8081/.well-known/jwks.json
+        claims-validators:
+          expiration: true
+    authentication: bearer
   application:
     name: smallfinance
   server:
@@ -28,16 +38,7 @@ hikari:
   maxLifetime: 1800000  # 30 minutes (in milliseconds)
 
 
-security:
-    token:
-      jwt:
-        signatures:
-          jwks:
-            mock:
-              url: http://localhost:8081/.well-known/jwks.json
-        claims-validators:
-          expiration: true
-    authentication: bearer
+
 
 
 

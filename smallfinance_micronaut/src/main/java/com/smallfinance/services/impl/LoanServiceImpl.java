@@ -18,11 +18,15 @@ import com.smallfinance.services.TransactionService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service implementation for managing loans operations.
+ */
 @Singleton
 public class LoanServiceImpl implements LoanService {
     @Inject
@@ -36,6 +40,15 @@ public class LoanServiceImpl implements LoanService {
     @Inject
     private final TransactionService transactionService;
 
+    /**
+     * Constructs a new LoanServiceImpl with the required dependencies.
+     *
+     * @param accountDetailsRepository Repository for account details.
+     * @param loanRepository           Repository for loans.
+     * @param slabRepository           Repository for slabs.
+     * @param loanMapper               Mapper for converting loan entities to DTOs.
+     * @param transactionService       Service for managing transactions.
+     */
     public LoanServiceImpl(AccountDetailsRepository accountDetailsRepository, LoanRepository loanRepository, SlabRepository slabRepository, LoanMapper loanMapper, TransactionService transactionService) {
         this.accountDetailsRepository = accountDetailsRepository;
         this.slabRepository = slabRepository;
@@ -44,6 +57,12 @@ public class LoanServiceImpl implements LoanService {
         this.transactionService = transactionService;
     }
 
+    /**
+     * Calculate and return the total loan amount for a given account.
+     *
+     * @param accNo The account number for which to calculate the total loan amount.
+     * @return The total loan amount.
+     */
     @Override
     public Double getTotalLoanAmount(Long accNo) {
         List<Loan> loan = loanRepository.findAllByAccountNumberAndIsActive(accNo);
@@ -55,7 +74,14 @@ public class LoanServiceImpl implements LoanService {
 
     }
 
+    /**
+     * Add a new loan based on the provided input.
+     *
+     * @param input The LoanInput data for creating a loan.
+     * @return LoanOutput DTO.
+     */
     @Override
+    @Transactional
     public LoanOutput addLoan(LoanInput input) {
         Slabs slabs = slabRepository.findByTenuresAndTypeOfTransaction(Tenures.ONE_YEAR, TypeOfSlab.valueOf(input.getType()));
         Loan loan = new Loan();
@@ -91,6 +117,12 @@ public class LoanServiceImpl implements LoanService {
 //        return modelMapper.map(loan,LoanOutputDto.class);
         return loanMapper.mapToLoanOutputDto(loan);
     }
+    /**
+     * Get all loans, including pending and non-pending loans.
+     *
+     * @param accNo The account number for which to retrieve loans, or null to retrieve all loans.
+     * @return A list of loans, sorted with pending loans first.
+     */
 
     @Override
     public List<LoanOutput> getAllByUser(Long accNo) {
@@ -108,6 +140,11 @@ public class LoanServiceImpl implements LoanService {
         return newList;
     }
 
+    /**
+     * Get all loans.
+     *
+     * @return A list of all loans, sorted by activity status.
+     */
     @Override
     public List<LoanOutput> getAll() {
         List<LoanOutput> newList =  loanRepository.findAll().stream().map(loan->loanMapper.mapToLoanOutputDto(loan)).collect(Collectors.toList());
@@ -115,7 +152,15 @@ public class LoanServiceImpl implements LoanService {
         return newList;
     }
 
+    /**
+     * Set the status of a loan based on its ID.
+     *
+     * @param id     The ID of the loan.
+     * @param status The new status to set (APPROVED or REJECTED).
+     * @return The updated loan information.
+     */
     @Override
+    @Transactional
     public LoanOutput setLoan(UUID id, String status) {
         Loan loan = loanRepository.findById(id).orElseThrow(()->new RuntimeException("account not found"));
         Period period = Period.between(loan.getAppliedDate(),loan.getLoanEndDate());
@@ -182,6 +227,14 @@ public class LoanServiceImpl implements LoanService {
         return loan;
     }
 
+
+    /**
+     * Get all loans for a specific account number and loan type.
+     *
+     * @param accNo The account number for which to retrieve loans.
+     * @param type  The type of loan (e.g., GOLD_LOAN, PERSONAL_LOAN).
+     * @return A list of loans matching the specified account and loan type.
+     */
     @Override
     public List<LoanOutput> getByType(Long accNo, String type) {
         List<Loan> list = loanRepository.findAllByAccountNumber(accNo);
@@ -195,18 +248,34 @@ public class LoanServiceImpl implements LoanService {
         return typeLoanList;
     }
 
+    /**
+     * Get all loans in pending status.
+     *
+     * @return A list of loans with pending status.
+     */
     @Override
     public List<LoanOutput> getAllPending() {
         List<Loan> loans = loanRepository.findAllPending();
         return loans.stream().map(loanMapper::mapToLoanOutputDto).collect(Collectors.toList());
        }
 
+    /**
+     * Get all loans that are not in pending status.
+     *
+     * @return A list of loans that are not in pending status.
+     */
     @Override
     public List<LoanOutput> getAllByNotPending() {
         List<Loan> loans = loanRepository.findAllNotPending();
         return loans.stream().map(loanMapper::mapToLoanOutputDto).collect(Collectors.toList());
        }
 
+    /**
+     * Get all loans by their status.
+     *
+     * @param s The status of loans (e.g., UNDER_REVIEW, APPROVED).
+     * @return A list of loans matching the specified status.
+     */
     @Override
     public List<LoanOutput> getAllByStatus(String s) {
         Status status = Status.valueOf(s);
@@ -221,6 +290,12 @@ public class LoanServiceImpl implements LoanService {
         return loanOutputDtos;
     }
 
+    /**
+     * Get loan details by ID.
+     *
+     * @param id The unique ID of the loan.
+     * @return The loan details.
+     */
     @Override
     public LoanOutput getById(UUID id) {
         Loan loan = loanRepository.findById(id).orElseThrow(()->new RuntimeException("loan account not found"));

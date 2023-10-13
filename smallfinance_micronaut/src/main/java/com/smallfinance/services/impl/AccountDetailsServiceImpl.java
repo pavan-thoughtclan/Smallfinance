@@ -27,6 +27,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Service implementation class for managing account details operations.
+ */
 @Singleton
 @RequiredArgsConstructor
 public class AccountDetailsServiceImpl implements AccountDetailsService {
@@ -54,6 +57,12 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     UserMapper userMapper;
 
 
+    /**
+     * Creates a new account based on the provided account_details input details.
+     *
+     * @param input The account details input.
+     * @return AccountDetailsOutput representing the created account.
+     */
     @Transactional
     @Override
     public AccountDetailsOutput create(AccountDetailsInput input) {
@@ -68,6 +77,12 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
 
     }
 
+    /**
+     * Retrieves account details by account number.
+     *
+     * @param accountNumber The account number .
+     * @return AccountDetailsOutput representing the account.
+     */
     @Override
     public AccountDetailsOutput getById(Long accountNumber) {
         AccountDetails accountDetails = accountDetailsRepository.findById(accountNumber).orElseThrow(() -> new RuntimeException("Account is not present with this account number"));
@@ -78,6 +93,12 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         return accountDetailsOutput;
     }
 
+    /**
+     * Retrieves account details by user ID.
+     *
+     * @param userId The user ID.
+     * @return AccountDetailsOutput representing the account.
+     */
     @Override
     public AccountDetailsOutput getByUser(UUID userId) {
         User user = userMapper.userDtoToUser(userService.getById(userId));
@@ -87,7 +108,12 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
 
     }
 
-
+    /**
+     * Retrieves the home page details for a given account ID.
+     *
+     * @param id The account ID.
+     * @return HomePageOutput representing home page details.
+     */
     @Override
     public HomePageOutput getHomePageById(Long id) {
         AccountDetails account = accountDetailsRepository.findById(id)
@@ -103,12 +129,24 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         return homePage;
     }
 
+    /**
+     * Retrieves the balance of the account by account number.
+     *
+     * @param accountNumber The account number.
+     * @return The balance of the account.
+     */
     @Override
     public Double getBalance(Long accountNumber) {
         return accountDetailsRepository.findById(accountNumber).get().getBalance();
 
     }
 
+    /**
+     * Setting KYC as true for a given account number.
+     *
+     * @param accNo The account number.
+     * @return AccountDetailsOutput with KYC verification.
+     */
     @Override
     public AccountDetailsOutput verifyKyc(Long accNo) {
         AccountDetails accountDetails = accountDetailsRepository.findById(accNo).orElseThrow(()->new RuntimeException("no account found with this id"));
@@ -123,7 +161,10 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     }
 
 
-
+    /**
+     * generating random unique number for account_number
+     * @return unique account number.
+     */
     private Long generateUniqueAccountNumber() {
         List<AccountDetails> accountDetailsList = accountDetailsRepository.findAll();
         accountDetailsList.sort(Comparator.comparing(AccountDetails::getAccountNumber));

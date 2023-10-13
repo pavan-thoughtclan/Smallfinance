@@ -16,24 +16,29 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 
+/**
+ * User Service class implementation responsible for managing user-related operations.
+ */
 @Singleton
-
 public class UserServiceImpl implements UserService {
     @Inject
     private final UserRepository userRepository;
-    @Inject
-    private final AccountDetailsRepository accountDetailsRepository;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*";
 
     @Singleton
     private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, AccountDetailsRepository accountDetailsRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.accountDetailsRepository = accountDetailsRepository;
         this.userMapper = userMapper;
     }
 
+    /**
+     * Adds a new user based on the provided AccountDetailsInput data.
+     *
+     * @param input The input data for creating a new user.
+     * @return The created User entity.
+     */
     @Override
     public User addUser(AccountDetailsInput input) {
         User user = new User();
@@ -50,12 +55,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Calculates the age based on the provided date of birth.
+     *
+     * @param dob The date of birth.
+     * @return The calculated age.
+     */
     public static int calculateAge(LocalDate dob) {
         LocalDate currentDate = LocalDate.now();
         Period period = Period.between(dob, currentDate);
         return period.getYears();
     }
 
+    /**
+     * Generates a random password string for new users.
+     *
+     * @return A randomly generated password.
+     */
     public static String generateRandomPassword() {
         StringBuilder password = new StringBuilder();
         Random random = new SecureRandom();
@@ -69,19 +85,26 @@ public class UserServiceImpl implements UserService {
         return password.toString();
     }
 
+    /**
+     * Retrieves a user's information by their unique ID.
+     *
+     * @param id The id of the user.
+     * @return The UserOutput DTO representing the user's information.
+     */
     @Override
     public UserOutput getById(UUID id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with this id"));
         return userMapper.userToUserDto(user);
     }
 
+    /**
+     * Retrieves a list of all users.
+     *
+     * @return A list of UserOutput DTOs representing user information.
+     */
     @Override
     public List<UserOutput> getAll() {
         List<User> users = userRepository.findAll();
-//        return users.map(user -> {
-//            UserOutputDto dto = userMapper.mapToUserOutputDto(user);
-//            return dto;
-//        })
-        return users.stream().map(user -> userMapper.userToUserDto(user)).toList();
+        return users.stream().map(userMapper::userToUserDto).toList();
     }
 }
