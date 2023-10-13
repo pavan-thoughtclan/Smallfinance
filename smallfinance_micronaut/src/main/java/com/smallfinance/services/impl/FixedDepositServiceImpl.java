@@ -18,6 +18,7 @@ import com.smallfinance.services.TransactionService;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -53,6 +54,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
     }
 
     @Override
+    @Transactional
     public FixedDepositOutput createFixedDeposit(FixedDepositInput fixedDepositInput) {
         Double amount = fixedDepositInput.getAmount();
         AccountDetails accountNumber = accountDetailsRepository.findById(fixedDepositInput.getAccountNumber())
@@ -100,6 +102,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
     }
 
     @Override
+    @Transactional
     public FixedDepositOutput breakFixedDeposit(String id) {
         UUID uuid = UUID.fromString(id);
         FixedDeposit fd = fixedDepositRepository.findById(uuid).orElseThrow(()->new RuntimeException("No fixed repository with that id"));
@@ -161,6 +164,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
         return null;
     }
 
+    @Transactional
     private UUID performTransaction(FixedDeposit fd, String type) {
 
         TransactionInput transactionInputDto = new TransactionInput();

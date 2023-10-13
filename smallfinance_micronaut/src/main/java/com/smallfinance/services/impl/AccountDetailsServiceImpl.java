@@ -19,6 +19,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -53,6 +54,7 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     UserMapper userMapper;
 
 
+    @Transactional
     @Override
     public AccountDetailsOutput create(AccountDetailsInput input) {
         User user = userService.addUser(input);
