@@ -26,7 +26,7 @@ public class SlabController {
     private SlabService slabService;
     @Inject
     private SecurityService securityService;
-    @Post("/add")
+    @Post()
     public Mono<SlabOutputDto> addSlab(@Body SlabInputDto slabInputDto){
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
         return slabService.addSlab(slabInputDto);

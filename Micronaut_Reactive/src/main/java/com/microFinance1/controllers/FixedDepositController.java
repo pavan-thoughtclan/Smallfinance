@@ -16,14 +16,14 @@ import java.util.UUID;
 
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 @Secured(IS_AUTHENTICATED)
-@Controller("/fd")
+@Controller("/fds")
 public class FixedDepositController {
     @Inject
     private FixedDepositService fixedDepositService;
     @Inject
     private SecurityService securityService;
 
-    @Post("/create")
+    @Post()
     public Mono<FixedDepositOutputDto> createFixedDeposit(@Body FixedDepositInputDto fixedDepositInputDto)
     {
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))

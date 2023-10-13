@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 
 
-@Controller("/deposit")
+@Controller("/deposits")
 public class DepositController {
     @Inject
     private DepositService depositService;
