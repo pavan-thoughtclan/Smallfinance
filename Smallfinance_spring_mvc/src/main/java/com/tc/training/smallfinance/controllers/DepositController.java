@@ -11,17 +11,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * DepositController handles deposit-related APIs.
+ */
+
 @RestController
-@RequestMapping("/deposit")
+@RequestMapping("/deposits")
 public class DepositController {
     @Autowired
     private DepositService  depositService;
+
+    /**
+     * Get FD (Fixed Deposit) details for a customer's account.
+     * @param accNo Account number
+     * @return FDDetails
+     */
 
     @GetMapping("/getDetails")
     @PreAuthorize("hasRole('CUSTOMER')")
     public FDDetails getDetails(@RequestParam Long accNo){
        return depositService.getDetails(accNo);
     }
+
+    /**
+     * Get a list of accounts related to the customer (for ROLE_CUSTOMER only).
+     * @param accNo Account number
+     * @return List of accounts
+     */
 
     @GetMapping("/get")
     @PreAuthorize("hasRole('CUSTOMER')")

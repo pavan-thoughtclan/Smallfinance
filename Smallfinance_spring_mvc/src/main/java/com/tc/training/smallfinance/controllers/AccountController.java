@@ -12,18 +12,35 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * AccountDetailsController to handles all the account related apis
+ */
+
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 public class AccountController {
 
     @Autowired
     private AccountServiceDetails accountServiceDetails;
 
-    @PostMapping(value = "/create")
+    /**
+     * Taking AccountDetailsInput as input to create account and returning account output dto.
+     * @param accountDetails AccountDetailsInput
+     * @return AccountDetailsOutput
+     */
+
+//    @PostMapping(value = "/create")
+    @PostMapping("")
     public ResponseEntity<AccountDetailsOutputDto> createAccount(@RequestBody AccountDetailsInputDto accountDetails){
         AccountDetailsOutputDto createdAccount=accountServiceDetails.createAccount(accountDetails);
         return ResponseEntity.ok(createdAccount);
     }
+
+    /**
+     * Get account details by ID (for ROLE_CUSTOMER only).
+     * @param accountNumber Account ID
+     * @return AccountDetailsOutput
+     */
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -32,11 +49,23 @@ public class AccountController {
         return getAccount;
     }
 
+    /**
+     * Get account balance by ID (for ROLE_CUSTOMER only).
+     * @param accNo Account ID
+     * @return Double representing the account balance
+     */
+
     @GetMapping("/getBalance/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Double getBalance(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.getBalance(accNo);
     }
+
+    /**
+     * Get account details by user ID (for ROLE_CUSTOMER only).
+     * @param userId User ID
+     * @return AccountDetailsOutput
+     */
 
     @GetMapping("/getAccountByUser")
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -44,11 +73,23 @@ public class AccountController {
        return  accountServiceDetails.getAccountByUser(userId);
     }
 
+    /**
+     * Get home page details by ID (for ROLE_CUSTOMER only).
+     * @param accNo Account ID
+     * @return HomePageOutput
+     */
+
     @GetMapping("/homePage/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
     public HomePageOutputDto getHomePageDetails(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.getHomePageDetails(accNo);
     }
+
+    /**
+     * Verify KYC for an account (for ROLE_CUSTOMER only).
+     * @param accNo Account number
+     * @return AccountDetailsOutput
+     */
 
     @GetMapping("/setKyc/{id}")
     @PreAuthorize("hasRole('MANAGER')")

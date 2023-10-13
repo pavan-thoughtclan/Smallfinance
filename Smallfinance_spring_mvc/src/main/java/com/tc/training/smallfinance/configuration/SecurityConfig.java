@@ -43,21 +43,21 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/account/{id}",
-                                "/account/getBalance",
-                                "/account/getAccountByUser",
-                                "/account/homePage",
-                                "/account/setKyc",
-                                "/loan/**",
-                                "/deposit/**",
-                                "/fd/**",
-                                "/rd/**",
-                                "/transaction/**",
+                                "/accounts/{id}",
+                                "/accounts/getBalance",
+                                "/accounts/getAccountByUser",
+                                "/accounts/homePage",
+                                "/accounts/setKyc",
+                                "/loans/**",
+                                "/deposits/**",
+                                "/fds/**",
+                                "/rds/**",
+                                "/transactions/**",
                                 "/users/**",
-                                "/slab/**"
+                                "/slabs/**"
                         ).authenticated()
                         .requestMatchers(
-                                "/account/create"
+                                "/accounts"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
