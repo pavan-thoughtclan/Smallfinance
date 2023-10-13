@@ -18,7 +18,7 @@ import static io.micronaut.security.rules.SecurityRule.IS_ANONYMOUS;
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 
 @Slf4j
-@Controller("/account")
+@Controller("/accounts")
 public class AccountController {
     @Inject
     private AccountServiceDetails accountServiceDetails;
@@ -26,7 +26,7 @@ public class AccountController {
     @Inject
     private SecurityService securityService;
 
-    @Post("/create")
+    @Post()
     @Secured(IS_ANONYMOUS)
     public Mono<AccountDetailsOutputDto> createAccount(@Body AccountDetailsInputDto accountDetailsInputDto){
         return accountServiceDetails.createAccount(accountDetailsInputDto);

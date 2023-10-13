@@ -19,13 +19,13 @@ import java.util.UUID;
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 
 @Secured(IS_AUTHENTICATED)
-@Controller("/loan")
+@Controller("/loans")
 public class LoanController {
     @Inject
     private LoanService loanService;
     @Inject
     private SecurityService securityService;
-    @Post("/apply")
+    @Post()
     public Mono<LoanOutputDto> addLoan(@Body LoanInputDto loanInputDto){
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return loanService.addLoan(loanInputDto);
