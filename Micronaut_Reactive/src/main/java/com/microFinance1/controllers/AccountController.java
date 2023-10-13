@@ -66,7 +66,7 @@ public class AccountController {
             return accountServiceDetails.getHomePageDetails(accNo);
         throw new AuthenticationException("you are not allowed to access this");
     }
-    @Get("/setKyc/{id}")
+    @Put("/setKyc/{id}")
     @Secured(IS_AUTHENTICATED)
     public Mono<AccountDetailsOutputDto> verifyKyc(@PathVariable(name = "id") Long accNo){
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
