@@ -91,7 +91,7 @@ public class AccountController {
      * @return AccountDetailsOutput
      */
 
-    @GetMapping("/setKyc/{id}")
+    @PutMapping("/setKyc/{id}")
     @PreAuthorize("hasRole('MANAGER')")
     public AccountDetailsOutputDto verifyKyc(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.verifyKyc(accNo);
