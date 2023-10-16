@@ -46,7 +46,7 @@ public class DepositController {
      * @return List of accounts
      */
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    @Get("/getByAccount")
+    @Get("/get")
     public List<Object> getAccounts(@QueryValue Long accNo){
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return depositService.getAccounts(accNo);
