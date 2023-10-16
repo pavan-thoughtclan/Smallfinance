@@ -13,11 +13,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transaction")
+@RequestMapping("/transactions")
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
-    @PostMapping("/transfer")
+    @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Mono<TransactionOutputDto> transfer(@RequestBody TransactionInputDto transactionInputDto, @RequestParam Long accNo){
 

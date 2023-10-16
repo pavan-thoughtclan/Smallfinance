@@ -9,17 +9,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * UserController handles operations related to user APIs.
+ */
+
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    /**
+     * Get a list of all users.
+     * @return List of UserOutput
+     */
 
     @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
     public List<UserOutputDto> getAllUsers(){
         return userService.getAll();
     }
+
+    /**
+     * Get user information by their ID.
+     * @param id The ID of the user
+     * @return UserOutput
+     */
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")

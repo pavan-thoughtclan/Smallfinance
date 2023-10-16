@@ -17,7 +17,7 @@ public class SlabController {
     @Autowired
     private SlabService slabService;
 
-    @PostMapping("/add")
+    @PostMapping()
     @PreAuthorize("hasRole('MANAGER')")
     public Mono<SlabOutputDto> addSlab(@RequestBody SlabInputDto slabInputDto){
         return slabService.addSlab(slabInputDto);

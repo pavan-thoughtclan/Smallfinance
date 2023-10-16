@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/fd")
+@RequestMapping("/fds")
 public class FixedDepositController {
     @Autowired
     private FixedDepositService fixedDepositService;
-    @PostMapping("/create")
+    @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
     public Mono<FixedDepositOutputDto> createFixedDeposit(@RequestBody FixedDepositInputDto fixedDepositInputDto){
         return fixedDepositService.createFixedDeposit(fixedDepositInputDto);

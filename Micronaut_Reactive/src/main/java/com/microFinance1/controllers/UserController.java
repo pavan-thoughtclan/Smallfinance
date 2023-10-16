@@ -17,7 +17,7 @@ import java.util.UUID;
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 
 @Secured(IS_AUTHENTICATED)
-@Controller("/user")
+@Controller("/users")
 public class UserController {
     @Inject
     private UserService userService;

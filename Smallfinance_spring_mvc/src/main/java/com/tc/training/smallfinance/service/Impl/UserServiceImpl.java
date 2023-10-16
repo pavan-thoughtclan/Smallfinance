@@ -10,12 +10,14 @@ import com.tc.training.smallfinance.repository.TransactionRepository;
 import com.tc.training.smallfinance.repository.UserRepository;
 import com.tc.training.smallfinance.service.TransactionService;
 import com.tc.training.smallfinance.service.UserService;
+import com.tc.training.smallfinance.utils.Role;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.*;
 import java.util.List;
@@ -54,23 +56,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserOutputDto> getAll() {
-        List<User> userList = userRepository.findByRoleNameCustomer();
-        List<UserOutputDto> list = userList.stream()
-                .map(user -> userMapper.userToUserDto(user))
-                .collect(Collectors.toList());
-        // Sort the list based on custom logic (not handled by MapStruct)
-        list.sort((o1, o2) -> {
-            User user1 = userRepository.findById(o1.getUserId()).orElseThrow(() -> new AccountNotFoundException("no account with this id"));
-            User user2 = userRepository.findById(o2.getUserId()).orElseThrow(() -> new AccountNotFoundException("no account with this id"));
-            if (accountRepository.findByUser(user1).getOpeningDate().isAfter(accountRepository.findByUser(user2).getOpeningDate())) {
-                return 1;
-            } else if (accountRepository.findByUser(user1).getOpeningDate().isBefore(accountRepository.findByUser(user2).getOpeningDate())) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
-        return list;
+//        List<User> userList = userRepository.findByRoleNameCustomer();
+//
+//        List<UserOutputDto> list = userList.stream()
+//                .map(userMapper::userToUserDto)
+//                .collect(Collectors.toList());
+//
+//        // Sort the list based on custom logic
+//        list.sort((o1, o2) -> {
+//            User user1 = userRepository.findById(o1.getUserId()).orElseThrow(() -> new AccountNotFoundException("No account with this id"));
+//            User user2 = userRepository.findById(o2.getUserId()).orElseThrow(() -> new AccountNotFoundException("No account with this id"));
+//
+//            // Assuming accountRepository is used to get openingDate
+//            LocalDateTime openingDate1 = accountRepository.findByUser(user1).getOpeningDate().atStartOfDay();
+//            LocalDateTime openingDate2 = accountRepository.findByUser(user2).getOpeningDate().atStartOfDay();
+//
+//            return openingDate1.compareTo(openingDate2);
+//        });
+//        return list;
+        List<User> users = userRepository.findAll();
+        // Filter out users with the role "ROLE_MANAGER"
+        List<UserOutputDto> filteredUsers = users.stream()
+                .filter(user -> !user.getRoleName().equals(Role.ROLE_MANAGER))
+                .map(userMapper::userToUserDto)
+                .toList();
+
+        return filteredUsers;
     }
 
     @Override

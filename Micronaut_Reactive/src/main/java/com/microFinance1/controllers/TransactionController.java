@@ -16,13 +16,13 @@ import java.time.LocalDate;
 import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 
 @Secured(IS_AUTHENTICATED)
-@Controller("/transaction")
+@Controller("/transactions")
 public class TransactionController {
     @Inject
     private TransactionService transactionService;
     @Inject
     private SecurityService securityService;
-    @Post("/transfer")
+    @Post()
     public Mono<TransactionOutputDto> transfer(@Body TransactionInputDto transactionInputDto, @QueryValue Long accNo )
     {
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))

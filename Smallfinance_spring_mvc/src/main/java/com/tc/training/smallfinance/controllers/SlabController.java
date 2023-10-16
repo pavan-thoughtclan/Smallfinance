@@ -9,17 +9,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * SlabController handles operations related to slab apis.
+ */
+
 @RestController
 @RequestMapping("/slabs")
 public class SlabController {
     @Autowired
     private SlabService slabService;
 
-    @PostMapping("/add")
+    /**
+     * Add a new slab based on the provided input.
+     * @param slabInputDto SlabInput
+     * @return SlabOutput
+     */
+
+//    @PostMapping("/add")
+    @PostMapping("")
     @PreAuthorize("hasRole('MANAGER')")
     public SlabOutputDto addSlab(@RequestBody SlabInputDto slabInputDto){
         return slabService.addSlab(slabInputDto);
     }
+
+    /**
+     * Get a list of all slabs.
+     * @return List of SlabOutput
+     */
 
     @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
