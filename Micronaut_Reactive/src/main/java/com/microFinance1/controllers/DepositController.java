@@ -30,7 +30,7 @@ public class DepositController {
             return depositService.getDetails(accNo);
         throw new AuthenticationException("you are not allowed to access this");
     }
-    @Get("/getAccounts")
+    @Get("/get")
     @Secured(IS_AUTHENTICATED)
     public Flux<Object> getAccounts(@QueryValue Long accNo){
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
