@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 public class AccountDetailsController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class AccountDetailsController {
         return accountServiceDetails.getBalance(id);
     }
 
-    @PostMapping(value = "/create" ,consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "" ,consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
     public Mono<AccountDetailsOutputDto> createAccount(@RequestBody AccountDetailsInputDto accountDetails){
         return accountServiceDetails.createAccount(accountDetails);
 
@@ -53,7 +53,7 @@ public class AccountDetailsController {
         return accountServiceDetails.getHomePageDetails(accNo);
 
     }
-    @GetMapping("/setKyc/{id}")
+    @PutMapping("/setKyc/{id}")
     @PreAuthorize("hasRole('MANAGER')")
     public Mono<AccountDetailsOutputDto> verifyKyc(@PathVariable(name = "id") Long accNo){
         return accountServiceDetails.verifyKyc(accNo);
