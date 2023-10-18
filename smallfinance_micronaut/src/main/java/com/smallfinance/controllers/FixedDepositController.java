@@ -113,7 +113,7 @@ public class FixedDepositController {
      * @return List of FixedDepositOutput
      */
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    @Get("/get_all_active")
+    @Get("/getAllActive")
     public List<FixedDepositOutput> getAllActive(@QueryValue Long accNo){
         if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return fixedDepositService.getAllActive(accNo);
