@@ -28,7 +28,7 @@ public class AccountDetailsController {
         return accountServiceDetails.getBalance(id);
     }
 
-    @PostMapping(value = "" ,consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping()
     public Mono<AccountDetailsOutputDto> createAccount(@RequestBody AccountDetailsInputDto accountDetails){
         return accountServiceDetails.createAccount(accountDetails);
 
