@@ -36,7 +36,7 @@ public class UserController {
      */
     @Get("/{id}")
     public UserOutput getById(@PathVariable UUID id) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return userService.getById(id);
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -47,7 +47,7 @@ public class UserController {
      */
     @Get
     public List<UserOutput> getAll() {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return userService.getAll();
         throw new RuntimeException("you are not allowed to access this");
     }
