@@ -19,8 +19,7 @@ import java.util.UUID;
 @Service
 public class AccountDetailsServiceImpl implements AccountDetailsService {
 
-    @Autowired
-    private EmailService emailService;
+
     @Autowired
     private AccountDetailsMapper accountDetailsMapper;
     @Autowired
@@ -68,7 +67,6 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
                                         })
 
                                 .map(savedAccount -> accountDetailsMapper.AccountDetailsToAccountDetailsOutputDto(savedAccount));
-
 
     }
 

@@ -103,7 +103,7 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
     @Override
     public Mono<AccountDetailsOutputDto> verifyKyc(Long accNo) {
         return accountRepository.findById(accNo).flatMap(account->{account.setKyc(Boolean.TRUE);
-        return accountRepository.save(account);
+        return accountRepository.update(account);
         })
                 .map(account->accountDetailsMapper.mapToAccountDetailsOutputDto(account));
     }

@@ -40,7 +40,7 @@ public class RecurringDepositController {
      */
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
     public RecurringDepositOutputDto getById(@PathVariable("id") UUID id){
         return recurringDepositService.getById(id);
     }

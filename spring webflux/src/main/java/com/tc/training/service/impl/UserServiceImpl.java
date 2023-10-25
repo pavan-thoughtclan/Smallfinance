@@ -34,8 +34,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private EmailServiceImpl emailService;
+
 
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*";
@@ -46,6 +45,7 @@ public class UserServiceImpl implements UserService {
         return calculateAge(accountDetailsInputDto.getDob())
                 .flatMap(age -> {
                     User user = userMapper.accountInputDtoToUser(accountDetailsInputDto);
+                    user.setAge(age);
                     return generateRandomPassword()
                             .map(password -> {
                                 user.setPassword(password);

@@ -56,7 +56,7 @@ public class AccountController {
      */
 
     @GetMapping("/getBalance/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
     public Double getBalance(@PathVariable(name="id") Long accNo){
         return accountServiceDetails.getBalance(accNo);
     }
