@@ -40,7 +40,7 @@ public class LoanController {
      */
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
     public LoanOutputDto getAll(@PathVariable("id") UUID id){
         return loanService.getById(id);
     }
@@ -52,7 +52,7 @@ public class LoanController {
      */
 
     @GetMapping("/getAllByUser")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
     public List<LoanOutputDto> getAllByUser(@RequestParam(required = false) Long accNo){
         return loanService.getAllByUser(accNo);
     }
@@ -63,7 +63,7 @@ public class LoanController {
      */
 
     @GetMapping("")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('MANAGER')")
     public List<LoanOutputDto> getAll(){
         return loanService.getAll();
     }

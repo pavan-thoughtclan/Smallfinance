@@ -28,7 +28,7 @@ public class DepositController {
      */
 
     @GetMapping("/getDetails")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('MANAGER')")
     public FDDetails getDetails(@RequestParam Long accNo){
        return depositService.getDetails(accNo);
     }
