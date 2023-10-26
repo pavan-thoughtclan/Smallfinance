@@ -34,9 +34,7 @@ public class FixedDepositController {
     @Get("/getAllByUser")
     public Flux<FixedDepositOutputDto> getAllFixedDeposit(@QueryValue Long accNo)
     {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return fixedDepositService.allFixedDeposit(accNo);
-        throw new AuthenticationException("you are not allowed to access this");
     }
     @Get("/getDetails")
     public Mono<FDDetails> getFDDetails(@QueryValue Long accNo){
@@ -53,7 +51,7 @@ public class FixedDepositController {
     }
     @Get()
     public Flux<FixedDepositOutputDto> getAll(){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return fixedDepositService.getAll();
         throw new AuthenticationException("you are not allowed to access this");
     }
@@ -61,16 +59,12 @@ public class FixedDepositController {
     @Get("/{id}")
     public Mono<FixedDepositOutputDto> getById(@PathVariable(name = "id") UUID id)
     {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return fixedDepositService.getById(id);
-        throw new AuthenticationException("you are not allowed to access this");
     }
 
     @Get("/getAllActive")
     public Flux<FixedDepositOutputDto> getAllActive(Long accNo){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return fixedDepositService.getAllActive(accNo);
-        throw new AuthenticationException("you are not allowed to access this");
     }
 
 
