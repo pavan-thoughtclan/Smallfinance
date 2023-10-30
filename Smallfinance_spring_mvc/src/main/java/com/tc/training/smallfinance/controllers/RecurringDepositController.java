@@ -75,7 +75,7 @@ public class RecurringDepositController {
      */
 
     @GetMapping("getByStatus")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
     public List<RecurringDepositOutputDto> getByStatus(@RequestParam Long accNo){
         return recurringDepositService.getByStatus(accNo);
     }
