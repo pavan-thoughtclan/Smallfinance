@@ -55,8 +55,6 @@ public class RecurringDepositController {
     @Get("getByStatus")
     public Flux<RecurringDepositOutputDto> getByStatus(@QueryValue Long accNo)
     {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return recurringDepositService.getByStatus(accNo);
-        throw new AuthenticationException("you are not allowed to access this");
     }
 }
