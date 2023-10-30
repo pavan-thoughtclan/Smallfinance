@@ -61,12 +61,12 @@ public class TransactionServiceImpl implements TransactionService {
                             .switchIfEmpty(Mono.error(new AccountNotFoundException("no account with this id")))
                             .flatMap(toAccount -> {
                                 toAccount.setBalance(toAccount.getBalance() + transactionInputDto.getAmount());
-                                return accountRepository.save(toAccount);
+                                return accountRepository.update(toAccount);
 
                             })
                             .flatMap(saveAcc -> {
                                 account.setBalance(account.getBalance() - transactionInputDto.getAmount());
-                                return accountRepository.save(account);
+                                return accountRepository.update(account);
                             });
 
                 })
@@ -88,7 +88,7 @@ public class TransactionServiceImpl implements TransactionService {
                     if(!account.getKyc()) return Mono.error(new KycNotCompletedException("kyc not completed"));
                     if(account.getBalance() < transactionInputDto.getAmount()) return Mono.error(new AmountNotSufficientException("amount exceeds balance"));
                     account.setBalance(account.getBalance() - transactionInputDto.getAmount());
-                    return accountRepository.save(account);
+                    return accountRepository.update(account);
                 })
                 .flatMap(account -> {
                     Transaction transaction = transactionMapper.mapToTransaction(transactionInputDto);

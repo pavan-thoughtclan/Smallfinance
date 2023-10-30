@@ -1,5 +1,5 @@
 package com.microFinance1.utils;
 
 public enum Role {
-    CUSTOMER,MANAGER
+    ROLE_CUSTOMER,ROLE_MANAGER
 }
