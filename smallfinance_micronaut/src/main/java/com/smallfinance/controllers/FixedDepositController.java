@@ -49,7 +49,7 @@ public class FixedDepositController {
     @Get("/getAllByUser")
     @Secured(SecurityRule.IS_AUTHENTICATED)
     public List<FixedDepositOutput> getAllFixedDeposit(@QueryValue Long accNo) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER") || securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return fixedDepositService.allFixedDeposit(accNo);
         throw new RuntimeException("you are not allowed to access this");
 
@@ -89,7 +89,7 @@ public class FixedDepositController {
     @Secured(SecurityRule.IS_AUTHENTICATED)
     @Get
     public List<FixedDepositOutput> getAll() {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return fixedDepositService.getAll();
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -102,7 +102,7 @@ public class FixedDepositController {
     @Secured(SecurityRule.IS_AUTHENTICATED)
     @Get("/{id}")
     public FixedDepositOutput getById(@PathVariable(name = "id") UUID id) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return fixedDepositService.getById(id);
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -115,7 +115,7 @@ public class FixedDepositController {
     @Secured(SecurityRule.IS_AUTHENTICATED)
     @Get("/getAllActive")
     public List<FixedDepositOutput> getAllActive(@QueryValue Long accNo){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return fixedDepositService.getAllActive(accNo);
         throw new RuntimeException("you are not allowed to access this");
     }

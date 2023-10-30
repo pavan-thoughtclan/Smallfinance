@@ -26,13 +26,13 @@ public class UserController {
 
     @Get()
     public Flux<UserOutputDto> getAllUsers(){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return userService.getAll();
         throw new AuthenticationException("you are not allowed to access this");
     }
     @Get("/{id}")
     public Mono<UserOutputDto> getById(@PathVariable(name = "id") UUID id){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return userService.getById(id);
         throw new AuthenticationException("you are not allowed to access this");
     }

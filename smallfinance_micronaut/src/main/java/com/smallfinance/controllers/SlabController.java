@@ -36,7 +36,7 @@ public class SlabController {
      */
     @Post
     public SlabOutput addSlab(@Body SlabInput slabInputDto) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return slabService.addSlab(slabInputDto);
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -47,7 +47,7 @@ public class SlabController {
      */
     @Get
     public List<SlabOutput> getAll() {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return slabService.getAll();
         throw new RuntimeException("you are not allowed to access this");
     }

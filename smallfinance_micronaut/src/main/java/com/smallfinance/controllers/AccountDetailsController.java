@@ -107,7 +107,7 @@ public class AccountDetailsController {
     @Put("/setKyc")
     public AccountDetailsOutput verifyKyc(@QueryValue Long accNo){
 
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return accountDetailsService.verifyKyc(accNo);
         throw new RuntimeException("you are not allowed to access this");
     }

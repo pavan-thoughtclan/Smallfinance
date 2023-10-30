@@ -48,7 +48,7 @@ public class LoanController {
     @Get("/{id}")
     public LoanOutput getById(@PathVariable UUID id) {
 
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER") || securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.getById(id);
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -60,7 +60,7 @@ public class LoanController {
 
     @Get("/getAllByUser")
     public List<LoanOutput> getAllByUser(@QueryValue Long accNo) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER") || securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.getAllByUser(accNo);
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -71,7 +71,7 @@ public class LoanController {
      */
     @Get
     public List<LoanOutput> getAll() {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.getAll();
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -85,7 +85,7 @@ public class LoanController {
 
     @Put("/set")
     public LoanOutput setLoan(@QueryValue UUID id,@QueryValue String status) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.setLoan(id, status);
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -110,7 +110,10 @@ public class LoanController {
      */
     @Get("/getTotalLoanAmount")
     public Double getTotalLoanAmount(@QueryValue Long accNo) {
-        return loanService.getTotalLoanAmount(accNo);
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+            return loanService.getTotalLoanAmount(accNo);
+        throw new RuntimeException("you are not allowed to access this");
+
     }
 
 
@@ -120,7 +123,10 @@ public class LoanController {
      */
     @Get("/getAllPending")
     public List<LoanOutput> getAllPending() {
-        return loanService.getAllPending();
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
+            return loanService.getAllPending();
+        throw new RuntimeException("you are not allowed to access this");
+
     }
 
 
@@ -130,7 +136,7 @@ public class LoanController {
      */
     @Get("/getAllByNotPending")
     public List<LoanOutput> getAllByNotPending() {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.getAllByNotPending();
         throw new RuntimeException("you are not allowed to access this");
     }
@@ -142,7 +148,7 @@ public class LoanController {
      */
     @Get("/getAllByStatus")
     public List<LoanOutput> getAllByStatus(@QueryValue String status) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.getAllByStatus(status);
         throw new RuntimeException("you are not allowed to access this");
     }

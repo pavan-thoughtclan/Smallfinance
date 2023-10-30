@@ -16,6 +16,7 @@ import com.microFinance1.services.FixedDepositService;
 import com.microFinance1.services.TransactionService;
 import com.microFinance1.utils.Tenures;
 import com.microFinance1.utils.TypeOfSlab;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.scheduling.annotation.Scheduled;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
