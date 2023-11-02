@@ -47,7 +47,7 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
     private static int sequence = 0;
 
     @Override
-    @Transactional
+//    @Transactional
     public AccountDetailsOutputDto createAccount(AccountDetailsInputDto accountDetailsInputDto) {
         AccountDetails accountDetails = accountDetailsMapper.mapToAccountDetails(accountDetailsInputDto);
         accountDetails.setUser(userService.addUser(accountDetailsInputDto));

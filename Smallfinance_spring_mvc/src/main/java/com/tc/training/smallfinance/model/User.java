@@ -24,7 +24,7 @@ public class User {
     private UUID id;
 
     @NotBlank
-    @Size(min=3,message = "Please enter name with atleast 3 characters")
+    @Size(min=1,message = "Please enter name with atleast 1 characters")
     private String firstName;
 
     private String lastName;
