@@ -1,5 +1,5 @@
 package com.smallfinance.enums;
 
 public enum Role {
-    CUSTOMER,MANAGER
+    ROLE_CUSTOMER,ROLE_MANAGER
 }

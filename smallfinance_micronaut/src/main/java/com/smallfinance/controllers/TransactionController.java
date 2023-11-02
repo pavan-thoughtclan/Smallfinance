@@ -8,6 +8,7 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.security.utils.SecurityService;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,7 +52,7 @@ public class TransactionController {
      */
     @Get
     public List<TransactionOutput> allTransaction(
-            @QueryValue LocalDate date1,
+            @QueryValue() LocalDate date1,
             @QueryValue LocalDate date2,
             @QueryValue String type,
             @QueryValue Long accNo) {

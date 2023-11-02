@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Data
 public class RecurringDepositOutput {
-    private UUID rId;
+    private UUID id;
 
     private String account;
 

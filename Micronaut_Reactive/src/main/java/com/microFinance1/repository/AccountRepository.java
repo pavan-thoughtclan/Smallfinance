@@ -7,6 +7,8 @@ import io.micronaut.data.r2dbc.annotation.R2dbcRepository;
 import io.micronaut.data.repository.reactive.ReactorCrudRepository;
 import reactor.core.publisher.Mono;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.UUID;
 
 @R2dbcRepository(dialect = Dialect.POSTGRES)
@@ -14,4 +16,5 @@ public interface AccountRepository extends ReactorCrudRepository<AccountDetails,
 //    Mono<AccountDetails> findByUser(User user);
     @Query(value = "select * from account_details where user_id = :userId",nativeQuery = true)
     Mono<AccountDetails> findByUserID(UUID userId);
+
 }
