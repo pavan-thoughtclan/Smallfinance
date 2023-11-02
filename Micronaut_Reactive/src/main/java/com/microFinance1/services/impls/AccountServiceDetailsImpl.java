@@ -24,7 +24,9 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
     private AccountRepository accountRepository;
     @Inject
     private UserService userService;
-    private static long lastTimestamp = 8804175630060000L;
+    private static Long lastTimestamp = 8804175630060000L;
+
+    private static Boolean flag = Boolean.TRUE;
     @Inject
     private AccountDetailsMapper accountDetailsMapper;
     @Inject
@@ -34,7 +36,7 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
 
     @Override
     @Transactional
-    public Mono<AccountDetailsOutputDto> createAccount(AccountDetailsInputDto accountDetailsInputDto) {
+    public synchronized Mono<AccountDetailsOutputDto> createAccount(AccountDetailsInputDto accountDetailsInputDto) {
         AccountDetails accountDetails = accountDetailsMapper.mapToAccountDetails(accountDetailsInputDto);
         return userService.addUser(accountDetailsInputDto)
                 .flatMap(user -> {
@@ -58,9 +60,12 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
         return accountRepository.findAll()
                 .collectList()
                 .flatMap(list -> {
-                    list.sort(Comparator.comparing(AccountDetails::getAccountNumber));
-                    lastTimestamp = list.get(list.size() - 1).getAccountNumber();
-                    return Mono.just(lastTimestamp + 1);
+                    if (flag) {
+                        list.sort(Comparator.comparing(AccountDetails::getAccountNumber));
+                        lastTimestamp = list.get(list.size() - 1).getAccountNumber();
+                        flag = Boolean.FALSE;
+                        return Mono.just(lastTimestamp + 1);
+                    } else return Mono.just(++lastTimestamp);
                 })
                 .onErrorResume(exception -> Mono.just(++lastTimestamp));
     }
@@ -114,5 +119,6 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
 //            emailService.sendEmail(email,subject,text);
 //        });
 //    }
+
 }
 
