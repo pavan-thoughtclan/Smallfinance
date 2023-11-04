@@ -37,7 +37,7 @@ public class UserController {
      */
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('MANAGER')")
     public UserOutputDto getById(@PathVariable("id") UUID id){
         return userService.getById(id);
     }

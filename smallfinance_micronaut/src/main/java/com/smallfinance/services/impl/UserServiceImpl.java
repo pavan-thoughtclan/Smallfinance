@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(input.getPhoneNumber());
         user.setAge(calculateAge(input.getDob()));
         user.setPassword(generateRandomPassword());
-        user.setRoleName(Role.CUSTOMER);
+        user.setRoleName(Role.ROLE_CUSTOMER);
         return userRepository.save(user);
     }
 

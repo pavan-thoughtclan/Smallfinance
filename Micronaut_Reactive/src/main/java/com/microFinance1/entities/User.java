@@ -41,5 +41,5 @@ public class User {
 
     private String phoneNumber;
 
-    private Role roleName = Role.CUSTOMER;
+    private Role roleName = Role.ROLE_CUSTOMER;
 }

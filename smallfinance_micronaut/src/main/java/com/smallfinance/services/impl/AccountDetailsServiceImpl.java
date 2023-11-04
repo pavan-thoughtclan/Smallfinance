@@ -71,7 +71,7 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         AccountDetails accountDetail = accountDetailsMapper.dtoToAccount(input);
         accountDetail.setUser(user);
         accountDetail.setAccountNumber(generateUniqueAccountNumber());
-        accountDetail.setAccountType(AccountType.SAVINGS);
+//        accountDetail.setAccountType(AccountType.SAVINGS);
         AccountDetails saved = accountDetailsRepository.save(accountDetail);
         return accountDetailsMapper.accountToDto(saved);
 

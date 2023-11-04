@@ -109,6 +109,8 @@
       <artifactId>micronaut-security-annotations</artifactId>
     </dependency>
 
+
+
     <!--    <dependency>-->
 <!--      <groupId>org.mapstruct</groupId>-->
 <!--      <artifactId>mapstruct-processor</artifactId>-->
@@ -124,6 +126,17 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>1.8</version>
     </dependency>
   </dependencies>
 

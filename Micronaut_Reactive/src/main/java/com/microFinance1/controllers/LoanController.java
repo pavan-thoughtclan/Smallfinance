@@ -40,14 +40,12 @@ public class LoanController {
 
     @Get("/getAllByUser")
     public Flux<LoanOutputDto> getAllByUser(@QueryValue Long accNo){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return loanService.getAllByUser(accNo);
-        throw new AuthenticationException("you are not allowed to access this");
     }
 
     @Get()
     public Flux<LoanOutputDto> getAll(){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.getAll();
         throw new AuthenticationException("you are not allowed to access this");
     }

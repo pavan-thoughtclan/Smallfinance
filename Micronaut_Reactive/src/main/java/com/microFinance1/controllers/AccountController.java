@@ -34,12 +34,9 @@ public class AccountController {
     @Get("/getBalance/{id}")
     @Secured(IS_AUTHENTICATED)
     public Mono<Double> getBalance(@PathVariable(name = "id") Long accNo){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
-
 //        log.info( "Current user name is {}.",
 //                securityService.getAuthentication().get().getAttributes().get("email") );
         return accountServiceDetails.getBalance(accNo);
-        throw new AuthenticationException("you are not allowed to access this");
     }
     @Get("/{id}")
     @Secured(IS_AUTHENTICATED)

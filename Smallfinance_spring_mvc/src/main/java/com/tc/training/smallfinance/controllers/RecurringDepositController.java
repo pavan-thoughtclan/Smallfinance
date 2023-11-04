@@ -40,7 +40,7 @@ public class RecurringDepositController {
      */
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
     public RecurringDepositOutputDto getById(@PathVariable("id") UUID id){
         return recurringDepositService.getById(id);
     }
@@ -75,7 +75,7 @@ public class RecurringDepositController {
      */
 
     @GetMapping("getByStatus")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
     public List<RecurringDepositOutputDto> getByStatus(@RequestParam Long accNo){
         return recurringDepositService.getByStatus(accNo);
     }

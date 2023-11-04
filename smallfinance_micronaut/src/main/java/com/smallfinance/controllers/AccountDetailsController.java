@@ -99,16 +99,16 @@ public class AccountDetailsController {
 
     /**
      * Verify KYC for an account (for ROLE_CUSTOMER only).
-     * @param accNo Account number
+     * @param id Account number
      * @return AccountDetailsOutput
      */
 
     @Secured(SecurityRule.IS_AUTHENTICATED)
-    @Put("/setKyc")
-    public AccountDetailsOutput verifyKyc(@QueryValue Long accNo){
+    @Put("/setKyc/{id}")
+    public AccountDetailsOutput verifyKyc(@PathVariable Long id){
 
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
-            return accountDetailsService.verifyKyc(accNo);
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
+            return accountDetailsService.verifyKyc(id);
         throw new RuntimeException("you are not allowed to access this");
     }
 }

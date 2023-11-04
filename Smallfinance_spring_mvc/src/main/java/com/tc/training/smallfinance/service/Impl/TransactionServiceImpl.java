@@ -52,7 +52,7 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.setWhichTransaction(TypeOfSlab.DEPOSIT);
             accountDetails.setBalance(accountDetails.getBalance() + transactionInputDto.getAmount());
         }
-        else if(transactionInputDto.getType().equals("WITHDRAW")){
+        else if(transactionInputDto.getType().equals("WITHDRAWAL")){
             transaction.setTo(accountRepository.findById(Long.valueOf(transactionInputDto.getTo())).orElseThrow(()->new AccountNotFoundException("To account not found")));
             transaction.setFrom(accountDetails);
             transaction.setTransactionType(TransactionType.DEBITED);

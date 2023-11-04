@@ -34,15 +34,13 @@ public class RecurringDepositController {
     @Get("/{id}")
     public Mono<RecurringDepositOutputDto> getById(@PathVariable(name = "id") UUID id)
     {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return recurringDepositService.getById(id);
-        throw new AuthenticationException("you are not allowed to access this");
     }
 
     @Get()
     public Flux<RecurringDepositOutputDto> getAll()
     {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return recurringDepositService.getAll();
         throw new AuthenticationException("you are not allowed to access this");
     }
@@ -57,8 +55,6 @@ public class RecurringDepositController {
     @Get("getByStatus")
     public Flux<RecurringDepositOutputDto> getByStatus(@QueryValue Long accNo)
     {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return recurringDepositService.getByStatus(accNo);
-        throw new AuthenticationException("you are not allowed to access this");
     }
 }
