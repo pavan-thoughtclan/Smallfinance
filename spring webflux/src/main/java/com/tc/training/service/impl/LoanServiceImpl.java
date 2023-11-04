@@ -5,6 +5,7 @@ import com.tc.training.dtos.inputdto.TransactionInputDto;
 import com.tc.training.dtos.outputdto.LoanOutputDto;
 import com.tc.training.dtos.outputdto.TransactionOutputDto;
 import com.tc.training.exception.AccountNotFoundException;
+import com.tc.training.exception.CustomException;
 import com.tc.training.mapper.LoanMapper;
 import com.tc.training.mapper.TransactionMapper;
 import com.tc.training.model.Loan;
@@ -55,6 +56,7 @@ public class LoanServiceImpl implements LoanService {
     public Mono<LoanOutputDto> addLoan(LoanInputDto loanInputDto) {
 
         return slabRepository.findByTenuresAndTypeOfSlab(Tenures.ONE_YEAR.toString(), TypeOfSlab.valueOf(loanInputDto.getType()).toString())
+                .switchIfEmpty(Mono.error(new CustomException("no slab with this value")))
                 .flatMap(slabs -> {
                     Loan loan =  loanMapper.LoanInputDtoToLoan(loanInputDto);
                     loan.setSlab_id(slabs.getId());

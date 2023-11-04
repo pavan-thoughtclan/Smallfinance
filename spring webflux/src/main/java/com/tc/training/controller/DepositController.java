@@ -18,7 +18,7 @@ public class DepositController {
     private DepositService depositService;
 
     @GetMapping("/getDetails")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public Mono<FDDetails> getDetails(@RequestParam Long accNo){
 
        return depositService.getDetails(accNo);

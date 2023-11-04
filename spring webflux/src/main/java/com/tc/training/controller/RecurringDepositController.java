@@ -44,7 +44,7 @@ public class RecurringDepositController {
         return recurringDepositService.getTotalMoneyInvested(accNo);
     }
     @GetMapping("getByStatus")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'MANAGER')")
     public Flux<RecurringDepositOutputDto> getByStatus(@RequestParam Long accNo){
         return recurringDepositService.getByStatus(accNo);
     }
