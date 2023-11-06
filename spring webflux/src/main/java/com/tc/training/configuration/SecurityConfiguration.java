@@ -39,21 +39,22 @@ public class SecurityConfiguration{
                     .cors(cors -> cors.disable())
                     .authorizeExchange(auth -> auth
                             .pathMatchers(
-                                    "/account/{id}",
-                                    "/account/getBalance/{id}",
-                                    "/account/getAccountByUser",
-                                    "/account/homePage/{id}",
-                                    "/account/setKyc/{id}",
-                                    "/loan/**",
-                                    "/deposit/**",
-                                    "/fd/**",
-                                    "/rd/**",
-                                    "/transaction/**",
+                                    "/accounts/{id}",
+                                    "/accounts/getBalance/{id}",
+                                    "/accounts/getAccountByUser",
+                                    "/accounts/homePage/{id}",
+                                    "/accounts/setKyc/{id}",
+                                    "/loans/**",
+                                    "/deposits/**",
+                                    "/fds/**",
+                                    "/rds/**",
+                                    "/transactions/**",
                                     "/users/**",
                                     "/slabs/**"
                             ).authenticated()
                             .pathMatchers(
-                                    "/account/create"
+                                    "/accounts/create",
+                                    "/actuator/prometheus"
 
                             ).permitAll()
                             .anyExchange().authenticated()
