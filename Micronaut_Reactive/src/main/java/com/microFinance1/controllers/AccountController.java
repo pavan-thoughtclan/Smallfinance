@@ -20,6 +20,7 @@ import static io.micronaut.security.rules.SecurityRule.IS_AUTHENTICATED;
 @Slf4j
 @Controller("/accounts")
 public class AccountController {
+    //annnn
     @Inject
     private AccountServiceDetails accountServiceDetails;
 
