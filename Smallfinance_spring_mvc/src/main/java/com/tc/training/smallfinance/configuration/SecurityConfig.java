@@ -57,7 +57,8 @@ public class SecurityConfig {
                                 "/slabs/**"
                         ).authenticated()
                         .requestMatchers(
-                                "/accounts"
+                                "/accounts",
+                                "/actuator/prometheus"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
