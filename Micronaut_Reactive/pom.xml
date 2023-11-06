@@ -151,7 +151,30 @@
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
-<!--    <dependency>-->
+
+    <dependency>
+      <groupId>io.micronaut.micrometer</groupId>
+      <artifactId>micronaut-micrometer-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.micronaut.micrometer</groupId>
+      <artifactId>micronaut-micrometer-registry-prometheus</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.micronaut</groupId>
+      <artifactId>micronaut-management</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.r2dbc</groupId>
+      <artifactId>r2dbc-pool</artifactId>
+      <version>1.0.1.RELEASE</version>
+    </dependency>
+
+
+<!--        <dependency>-->
 <!--      <groupId>org.apache.maven.plugins</groupId>-->
 <!--      <artifactId>maven-site-plugin</artifactId>-->
 <!--      <version>4.0.0-M10</version>-->
