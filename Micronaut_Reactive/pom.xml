@@ -81,24 +81,6 @@
       <artifactId>jakarta.annotation-api</artifactId>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>io.micronaut.micrometer</groupId>
-      <artifactId>micronaut-micrometer-core</artifactId>
-      <version>5.0.1</version>
-    </dependency>
-    <!-- micrometer-registry-statsd also pulls in micrometer-core so included above to verbose example -->
-    <dependency>
-      <groupId>io.micronaut.micrometer</groupId>
-      <artifactId>micronaut-micrometer-registry-prometheus</artifactId>
-      <version>5.0.1</version>
-    </dependency>
-    <!-- Also required to enable endpoint -->
-    <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-management</artifactId>
-      <version>4.1.11</version>
-    </dependency>
-
 
     <dependency>
       <groupId>ch.qos.logback</groupId>
