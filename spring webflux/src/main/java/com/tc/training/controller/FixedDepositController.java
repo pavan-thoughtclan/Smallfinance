@@ -19,7 +19,7 @@ import java.util.UUID;
 public class FixedDepositController {
     @Autowired
     private FixedDepositService fixedDepositService;
-    @PostMapping("")
+    @PostMapping()
     @PreAuthorize("hasRole('CUSTOMER')")
     public Mono<FixedDepositOutputDto> createFixedDeposit(@RequestBody FixedDepositInputDto fixedDepositInputDto){
         return fixedDepositService.createFixedDeposit(fixedDepositInputDto);

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-    @RequestMapping("/transactions")
+@RequestMapping("/transactions")
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
