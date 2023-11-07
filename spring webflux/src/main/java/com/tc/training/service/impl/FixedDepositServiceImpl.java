@@ -6,6 +6,7 @@ import com.tc.training.dtos.outputdto.FDDetails;
 import com.tc.training.dtos.outputdto.FixedDepositOutputDto;
 import com.tc.training.exception.AccountNotFoundException;
 import com.tc.training.exception.AmountNotSufficientException;
+import com.tc.training.exception.CustomException;
 import com.tc.training.exception.KycNotCompletedException;
 import com.tc.training.mapper.FixedDepositMapper;
 import com.tc.training.model.FixedDeposit;
@@ -70,7 +71,6 @@ public class FixedDepositServiceImpl implements FixedDepositService {
                 .flatMap(fd -> {
                     return performTransaction(fd,"DEBITED")
                             .thenReturn(fixedDepositMapper.FixedDepositToFixedDepositOutputDto(fd));
-
                 });
 
 
@@ -136,7 +136,7 @@ public class FixedDepositServiceImpl implements FixedDepositService {
                     fd.setPreMatureWithDrawl(LocalDate.now());
 
                     if (!fd.getActive()) {
-                        return Mono.error(new RuntimeException("This account is already closed"));
+                        return Mono.error(new CustomException("This account is already closed"));
                     }
 
                     Period period = Period.between(fd.getDepositedDate(), LocalDate.now());

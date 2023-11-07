@@ -11,7 +11,9 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "jsr330")
 public interface FixedDepositMapper {
     FixedDepositMapper MAPPER= Mappers.getMapper(FixedDepositMapper.class);
-
+    @Mapping(target = "fdId" , source = "fixedDeposit.id")
+    @Mapping(target = "interestRate" , source = "fixedDeposit.interestRate")
+    @Mapping(target = "interestAmountAdded" , source = "fixedDeposit.interestAmount")
     FixedDepositOutputDto mapToFixedDepositOutputDto(FixedDeposit fixedDeposit);
     FixedDeposit mapToFixedDeposit(FixedDepositInputDto fixedDepositInputDto);
 
