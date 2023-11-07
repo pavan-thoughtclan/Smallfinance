@@ -35,7 +35,7 @@ public class DepositController {
     @Secured(SecurityRule.IS_AUTHENTICATED)
     @Get("/getDetails")
     public FDDetails getDetails(@QueryValue Long accNo){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
+        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER"))
             return depositService.getDetails(accNo);
         throw new RuntimeException("you are not allowed to access this");
     }

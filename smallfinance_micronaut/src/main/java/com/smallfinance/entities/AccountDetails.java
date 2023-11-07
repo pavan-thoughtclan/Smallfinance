@@ -21,7 +21,7 @@ public class AccountDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "account_type")
-    private AccountType accountType;
+    private AccountType accountType = AccountType.Savings;
 
     @Column(name = "opening_date")
     private LocalDate openingDate;
