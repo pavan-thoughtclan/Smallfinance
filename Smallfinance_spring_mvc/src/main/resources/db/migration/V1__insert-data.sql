@@ -55,7 +55,7 @@ CREATE TABLE public.account_details (
 );
 
 
-ALTER TABLE public.account_details OWNER TO postgres;
+ALTER TABLE public.account_details OWNER TO poc;
 
 --
 -- TOC entry 216 (class 1259 OID 20571)
@@ -77,7 +77,7 @@ CREATE TABLE public.fixed_deposit (
 );
 
 
-ALTER TABLE public.fixed_deposit OWNER TO postgres;
+ALTER TABLE public.fixed_deposit OWNER TO poc;
 
 --
 -- TOC entry 217 (class 1259 OID 20583)
@@ -106,7 +106,7 @@ CREATE TABLE public.loan (
 );
 
 
-ALTER TABLE public.loan OWNER TO postgres;
+ALTER TABLE public.loan OWNER TO poc;
 
 --
 -- TOC entry 218 (class 1259 OID 20593)
@@ -129,7 +129,7 @@ CREATE TABLE public.recurring_deposit (
 );
 
 
-ALTER TABLE public.recurring_deposit OWNER TO postgres;
+ALTER TABLE public.recurring_deposit OWNER TO poc;
 
 --
 -- TOC entry 219 (class 1259 OID 20602)
@@ -146,7 +146,7 @@ CREATE TABLE public.recurring_deposit_payment (
 );
 
 
-ALTER TABLE public.recurring_deposit_payment OWNER TO postgres;
+ALTER TABLE public.recurring_deposit_payment OWNER TO poc;
 
 --
 -- TOC entry 220 (class 1259 OID 20607)
@@ -164,7 +164,7 @@ CREATE TABLE public.repayment (
 );
 
 
-ALTER TABLE public.repayment OWNER TO postgres;
+ALTER TABLE public.repayment OWNER TO poc;
 
 --
 -- TOC entry 221 (class 1259 OID 20613)
@@ -179,7 +179,7 @@ CREATE TABLE public.slabs (
 );
 
 
-ALTER TABLE public.slabs OWNER TO postgres;
+ALTER TABLE public.slabs OWNER TO poc;
 
 --
 -- TOC entry 222 (class 1259 OID 20619)
@@ -199,7 +199,7 @@ CREATE TABLE public.transactions (
 );
 
 
-ALTER TABLE public.transactions OWNER TO postgres;
+ALTER TABLE public.transactions OWNER TO poc;
 
 --
 -- TOC entry 223 (class 1259 OID 20626)
@@ -221,7 +221,7 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO postgres;
+ALTER TABLE public.users OWNER TO poc;
 
 --
 -- TOC entry 3410 (class 0 OID 20565)
