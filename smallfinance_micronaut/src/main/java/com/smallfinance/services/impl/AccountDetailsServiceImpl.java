@@ -21,10 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -40,6 +37,8 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     private final UserService userService;
     private final UserRepository userRepository;
     private static long lastTimestamp = 8804175630060000L;
+
+    private static Boolean flag = Boolean.TRUE;
     private final AtomicLong lastAccountNumber = new AtomicLong(8804175630060000L);
 
     @Inject
@@ -165,16 +164,18 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
      * generating random unique number for account_number
      * @return unique account number.
      */
-    private Long generateUniqueAccountNumber() {
+    private synchronized Long generateUniqueAccountNumber() {
         List<AccountDetails> accountDetailsList = accountDetailsRepository.findAll();
-        accountDetailsList.sort(Comparator.comparing(AccountDetails::getAccountNumber));
-
-        if (!accountDetailsList.isEmpty()) {
-            lastTimestamp = accountDetailsList.get(accountDetailsList.size() - 1).getAccountNumber();
+        if(flag) {
+            if (!accountDetailsList.isEmpty()) {
+                Collections.sort(accountDetailsList, Comparator.comparing(AccountDetails::getAccountNumber));
+                lastTimestamp = accountDetailsList.get(accountDetailsList.size() - 1).getAccountNumber();
+                flag = Boolean.FALSE;
+            }
         }
+        return ++lastTimestamp;
+//        ++lastTimestamp;
 
-        lastTimestamp++;
-        return lastTimestamp;
     }
 
 

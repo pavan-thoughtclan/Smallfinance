@@ -47,10 +47,7 @@ public class LoanController {
      */
     @Get("/{id}")
     public LoanOutput getById(@PathVariable UUID id) {
-
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER") || securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
-            return loanService.getById(id);
-        throw new RuntimeException("you are not allowed to access this");
+         return loanService.getById(id);
     }
     /**
      * Get all loans for a specific user account.
@@ -60,9 +57,7 @@ public class LoanController {
 
     @Get("/getAllByUser")
     public List<LoanOutput> getAllByUser(@QueryValue Long accNo) {
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER") || securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return loanService.getAllByUser(accNo);
-        throw new RuntimeException("you are not allowed to access this");
     }
 
     /**

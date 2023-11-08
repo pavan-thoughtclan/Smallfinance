@@ -24,7 +24,7 @@ public class User {
     @Column(name = "id", columnDefinition = "BINARY(16)", updatable = false, nullable = false, unique = true)
     private UUID id;
     @NotBlank
-    @Size(min = 3, message = "Please enter name with at least 3 characters")
+    @Size(min = 1, message = "Please enter name with at least 3 characters")
     @Column(name = "first_name")
     private String firstName;
 

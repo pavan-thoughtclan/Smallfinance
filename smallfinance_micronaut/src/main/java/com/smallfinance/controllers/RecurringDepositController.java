@@ -48,9 +48,7 @@ public class RecurringDepositController {
      */
     @Get("/{id}")
     public RecurringDepositOutput getById(@PathVariable UUID id){
-        if(securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_CUSTOMER") || securityService.getAuthentication().get().getAttributes().get("roles").equals("ROLE_MANAGER"))
             return recurringDepositService.getById(id);
-        throw new RuntimeException("you are not allowed to access this");
     }
 
     /**
