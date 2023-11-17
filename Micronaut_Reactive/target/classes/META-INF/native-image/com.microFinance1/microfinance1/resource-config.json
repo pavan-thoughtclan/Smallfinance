@@ -58,6 +58,8 @@
   }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.core.graal.GraalReflectionConfigurer/com.microFinance1.controllers.$LoanController$ReflectConfig\\E"
   }, {
+    "pattern" : "\\Qdb/migration/V1__insert-data.sql\\E"
+  }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/com.microFinance1.repository.$RecurringDepositRepository$Intercepted$Definition$Reference\\E"
   }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/com.microFinance1.controllers.$DepositController$Definition$Reference\\E"
@@ -125,8 +127,6 @@
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.core.beans.BeanIntrospectionReference/com.microFinance1.dtos.inputs.$LoanInputDto$IntrospectionRef\\E"
   }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.core.graal.GraalReflectionConfigurer/com.microFinance1.controllers.$SlabController$ReflectConfig\\E"
-  }, {
-    "pattern" : "\\Qdb/migration/V1__create-schema.sql\\E"
   }, {
     "pattern" : "\\QMETA-INF/micronaut/io.micronaut.inject.BeanDefinitionReference/com.microFinance1.services.impls.$UserServiceImpl$Definition$Reference\\E"
   }, {

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.microFinance1.MicroFinance1Test
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.96 s - in com.microFinance1.MicroFinance1Test
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.514 s - in com.microFinance1.MicroFinance1Test
