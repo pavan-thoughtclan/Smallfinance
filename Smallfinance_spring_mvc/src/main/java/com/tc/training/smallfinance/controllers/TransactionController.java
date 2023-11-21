@@ -30,7 +30,7 @@ public class TransactionController {
 //    @PostMapping("/transfer")
     @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public TransactionOutputDto transfer(@RequestBody TransactionInputDto transactionInputDto, @RequestParam Long accNo){
+    public TransactionOutputDto transfer(@RequestBody TransactionInputDto transactionInputDto, @RequestParam Long accNo)throws Exception{
         return transactionService.deposit(transactionInputDto,accNo);
     }
 
@@ -45,7 +45,7 @@ public class TransactionController {
 
     @GetMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public List<TransactionOutputDto> transactionHistory(@RequestParam(required = false)LocalDate date1, @RequestParam(required = false) LocalDate date2,@RequestParam(required = false) String type, @RequestParam Long accNo ){
+    public List<TransactionOutputDto> transactionHistory(@RequestParam(required = false)LocalDate date1, @RequestParam(required = false) LocalDate date2,@RequestParam(required = false) String type, @RequestParam Long accNo )throws Exception{
         return transactionService.getAllTransactions(date1,date2,type,accNo);
     }
 }

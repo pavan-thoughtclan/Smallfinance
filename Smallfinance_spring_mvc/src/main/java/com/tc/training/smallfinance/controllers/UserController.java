@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<UserOutputDto> getAllUsers(){
+    public List<UserOutputDto> getAllUsers()throws Exception{
         return userService.getAll();
     }
 
@@ -38,7 +38,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public UserOutputDto getById(@PathVariable("id") UUID id){
+    public UserOutputDto getById(@PathVariable("id") UUID id)throws Exception{
         return userService.getById(id);
     }
 }

@@ -29,7 +29,7 @@ public class DepositController {
 
     @GetMapping("/getDetails")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public FDDetails getDetails(@RequestParam Long accNo){
+    public FDDetails getDetails(@RequestParam Long accNo)throws Exception{
        return depositService.getDetails(accNo);
     }
 
@@ -41,7 +41,7 @@ public class DepositController {
 
     @GetMapping("/get")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public List<Object> getAccounts(@RequestParam Long accNo){
+    public List<Object> getAccounts(@RequestParam Long accNo)throws Exception{
         return depositService.getAccounts(accNo);
     }
 }

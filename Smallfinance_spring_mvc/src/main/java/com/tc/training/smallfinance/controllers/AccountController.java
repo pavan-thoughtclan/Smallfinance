@@ -31,7 +31,8 @@ public class AccountController {
 
 //    @PostMapping(value = "/create")
     @PostMapping("")
-    public ResponseEntity<AccountDetailsOutputDto> createAccount(@RequestBody AccountDetailsInputDto accountDetails){
+    public ResponseEntity<AccountDetailsOutputDto> createAccount(@RequestBody AccountDetailsInputDto accountDetails)
+            throws Exception{
         AccountDetailsOutputDto createdAccount=accountServiceDetails.createAccount(accountDetails);
         return ResponseEntity.ok(createdAccount);
     }
@@ -44,7 +45,8 @@ public class AccountController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public AccountDetailsOutputDto getAccountDetails(@PathVariable(name="id") Long accountNumber){
+    public AccountDetailsOutputDto getAccountDetails(@PathVariable(name="id") Long accountNumber)
+            throws Exception{
         AccountDetailsOutputDto getAccount=accountServiceDetails.getAccount(accountNumber);
         return getAccount;
     }
@@ -57,7 +59,8 @@ public class AccountController {
 
     @GetMapping("/getBalance/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public Double getBalance(@PathVariable(name="id") Long accNo){
+    public Double getBalance(@PathVariable(name="id") Long accNo)
+            throws Exception{
         return accountServiceDetails.getBalance(accNo);
     }
 
@@ -69,7 +72,7 @@ public class AccountController {
 
     @GetMapping("/getAccountByUser")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public AccountDetailsOutputDto getAccountByUser(@RequestParam UUID userId){
+    public AccountDetailsOutputDto getAccountByUser(@RequestParam UUID userId)throws Exception{
        return  accountServiceDetails.getAccountByUser(userId);
     }
 
@@ -81,7 +84,7 @@ public class AccountController {
 
     @GetMapping("/homePage/{id}")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public HomePageOutputDto getHomePageDetails(@PathVariable(name="id") Long accNo){
+    public HomePageOutputDto getHomePageDetails(@PathVariable(name="id") Long accNo)throws Exception{
         return accountServiceDetails.getHomePageDetails(accNo);
     }
 
@@ -93,7 +96,7 @@ public class AccountController {
 
     @PutMapping("/setKyc/{id}")
     @PreAuthorize("hasRole('MANAGER')")
-    public AccountDetailsOutputDto verifyKyc(@PathVariable(name="id") Long accNo){
+    public AccountDetailsOutputDto verifyKyc(@PathVariable(name="id") Long accNo)throws Exception{
         return accountServiceDetails.verifyKyc(accNo);
     }
 }

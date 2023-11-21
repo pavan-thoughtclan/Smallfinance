@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
 
 
 @Service
@@ -44,6 +45,8 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
 
     private static long lastTimestamp = 8804175630060000L;
 
+    private Boolean flag = Boolean.FALSE;
+
     private static int sequence = 0;
 
     @Override
@@ -57,16 +60,12 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
         accountDetails.setBalance(0D); // Set the initial balance to 0.0
         accountDetails.setKyc(false); // Set KYC to false by default
         try {
-//            sendEmail(accountDetails.getUser().getEmail(), accountDetails.getUser().getPassword(), accountDetails.getAccountNumber());
             AccountDetailsOutputDto outputDto = accountDetailsMapper.mapToAccountDetailsOutputDto(accountDetails);
-
             outputDto.setEmail(accountDetails.getUser().getEmail());
             AccountDetails accountDetails1 = accountDetailsMapper.mapToAccountDetails1(accountDetails);
-
             accountDetails = accountRepository.save(accountDetails);
         }catch(Exception e){throw new CustomException("error in creating account");}
         AccountDetailsOutputDto accountDetailsOutputDto =  accountDetailsMapper.mapToAccountDetailsOutputDto(accountDetails);
-
         accountDetailsOutputDto.setEmail(accountDetails.getUser().getEmail());
         return accountDetailsOutputDto;
     }
@@ -121,11 +120,15 @@ public class AccountServiceDetailsImpl implements AccountServiceDetails {
 
 
     private synchronized Long generateUniqueAccountNumber() {
-        List<AccountDetails> accountDetailsList = accountRepository.findAll();
-        if(!accountDetailsList.isEmpty()) {
+
+        if(!flag) {
+            List<AccountDetails> accountDetailsList = accountRepository.findAll();
             Collections.sort(accountDetailsList, Comparator.comparing(AccountDetails::getAccountNumber));
             lastTimestamp = accountDetailsList.get(accountDetailsList.size() - 1).getAccountNumber();
+            lastTimestamp++;
+            flag = Boolean.TRUE;
         }
-        return ++lastTimestamp;
+       else lastTimestamp++;
+       return lastTimestamp;
     }
 }

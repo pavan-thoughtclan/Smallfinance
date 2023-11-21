@@ -29,7 +29,7 @@ public class LoanController {
 //    @PostMapping("/apply")
     @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public LoanOutputDto addLoan(@RequestBody LoanInputDto loanInputDto){
+    public LoanOutputDto addLoan(@RequestBody LoanInputDto loanInputDto)throws Exception{
         return loanService.addLoan(loanInputDto);
     }
 
@@ -41,7 +41,7 @@ public class LoanController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public LoanOutputDto getAll(@PathVariable("id") UUID id){
+    public LoanOutputDto getAll(@PathVariable("id") UUID id)throws Exception{
         return loanService.getById(id);
     }
 
@@ -53,7 +53,7 @@ public class LoanController {
 
     @GetMapping("/getAllByUser")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public List<LoanOutputDto> getAllByUser(@RequestParam(required = false) Long accNo){
+    public List<LoanOutputDto> getAllByUser(@RequestParam(required = false) Long accNo)throws Exception{
         return loanService.getAllByUser(accNo);
     }
 
@@ -64,7 +64,7 @@ public class LoanController {
 
     @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<LoanOutputDto> getAll(){
+    public List<LoanOutputDto> getAll()throws Exception{
         return loanService.getAll();
     }
 
@@ -77,7 +77,7 @@ public class LoanController {
 
     @PutMapping("/set")
     @PreAuthorize("hasRole('MANAGER')")
-    public LoanOutputDto setLoan(@RequestParam UUID id,@RequestParam String status){
+    public LoanOutputDto setLoan(@RequestParam UUID id,@RequestParam String status)throws Exception{
        return loanService.setLoan(id,status);
     }
 
@@ -90,7 +90,7 @@ public class LoanController {
 
     @GetMapping("/getByType")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public List<LoanOutputDto> getByType(@RequestParam Long accNo , @RequestParam String type){
+    public List<LoanOutputDto> getByType(@RequestParam Long accNo , @RequestParam String type)throws Exception{
         return loanService.getBytype(accNo,type);
     }
 
@@ -102,7 +102,7 @@ public class LoanController {
 
     @GetMapping("/getTotalLoanAmount")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public Double getTotalLoanAmount(@RequestParam Long accNo){
+    public Double getTotalLoanAmount(@RequestParam Long accNo)throws Exception{
         return loanService.getTotalLoanAmount(accNo);
     }
 
@@ -113,7 +113,7 @@ public class LoanController {
 
     @GetMapping("/getAllPending")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<LoanOutputDto> getAllPending(){
+    public List<LoanOutputDto> getAllPending()throws Exception{
         return loanService.getAllPending();
     }
 
@@ -124,7 +124,7 @@ public class LoanController {
 
     @GetMapping("/getAllByNotPending")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<LoanOutputDto> getAllByNotPending(){
+    public List<LoanOutputDto> getAllByNotPending()throws Exception{
         return loanService.getAllByNotPending();
     }
 
@@ -136,7 +136,7 @@ public class LoanController {
 
     @GetMapping("/getAllByStatus")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<LoanOutputDto> getAllByStatus(@RequestParam String status){
+    public List<LoanOutputDto> getAllByStatus(@RequestParam String status)throws Exception{
         return loanService.getAllByStatus(status);
     }
 }

@@ -30,7 +30,7 @@ public class FixedDepositController {
 //    @PostMapping("/create")
     @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public FixedDepositOutputDto createFixedDeposit(@RequestBody  FixedDepositInputDto fixedDepositInputDto){
+    public FixedDepositOutputDto createFixedDeposit(@RequestBody  FixedDepositInputDto fixedDepositInputDto)throws Exception{
         return fixedDepositService.createFixedDeposit(fixedDepositInputDto);
     }
 
@@ -42,7 +42,7 @@ public class FixedDepositController {
 
     @GetMapping("/getAllByUser")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public List<FixedDepositOutputDto> getAllFixedDeposit(@RequestParam Long accNo){
+    public List<FixedDepositOutputDto> getAllFixedDeposit(@RequestParam Long accNo)throws Exception{
         return fixedDepositService.getAllFixedDeposit(accNo);
     }
 
@@ -54,7 +54,7 @@ public class FixedDepositController {
 
     @GetMapping("/getDetails")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public FDDetails getFDDetails(@RequestParam Long accNo){
+    public FDDetails getFDDetails(@RequestParam Long accNo)throws Exception{
         return fixedDepositService.getFDDetails(accNo);
     }
 
@@ -77,7 +77,7 @@ public class FixedDepositController {
 
     @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<FixedDepositOutputDto> getAll(){
+    public List<FixedDepositOutputDto> getAll()throws Exception{
        return fixedDepositService.getAll();
     }
 
@@ -89,7 +89,7 @@ public class FixedDepositController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public FixedDepositOutputDto getById(@PathVariable("id") UUID id){
+    public FixedDepositOutputDto getById(@PathVariable("id") UUID id)throws Exception{
         return fixedDepositService.getById(id);
     }
 
@@ -101,7 +101,7 @@ public class FixedDepositController {
 
     @GetMapping("/getAllActive")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public List<FixedDepositOutputDto> getAllActive(Long accNo){
+    public List<FixedDepositOutputDto> getAllActive(Long accNo)throws Exception{
         return fixedDepositService.getAllActive(accNo);
     }
 

@@ -29,7 +29,7 @@ public class RecurringDepositController {
 //    @PostMapping("/save")
     @PostMapping("")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public RecurringDepositOutputDto saveRd(@RequestBody RecurringDepositInputDto recurringDepositInputDto){
+    public RecurringDepositOutputDto saveRd(@RequestBody RecurringDepositInputDto recurringDepositInputDto)throws Exception{
         return recurringDepositService.saveRd(recurringDepositInputDto);
     }
 
@@ -41,7 +41,7 @@ public class RecurringDepositController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public RecurringDepositOutputDto getById(@PathVariable("id") UUID id){
+    public RecurringDepositOutputDto getById(@PathVariable("id") UUID id)throws Exception{
         return recurringDepositService.getById(id);
     }
 
@@ -52,7 +52,7 @@ public class RecurringDepositController {
 
     @GetMapping("")
     @PreAuthorize("hasRole('MANAGER')")
-    public List<RecurringDepositOutputDto> getAll(){
+    public List<RecurringDepositOutputDto> getAll()throws Exception{
         return recurringDepositService.getAll();
     }
 
@@ -64,7 +64,7 @@ public class RecurringDepositController {
 
     @GetMapping("/getTotalMoneyInvested")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public Double getTotalMoneyInvested(@RequestParam Long accNo){
+    public Double getTotalMoneyInvested(@RequestParam Long accNo)throws Exception{
         return recurringDepositService.getTotalMoneyInvested(accNo);
     }
 
@@ -76,7 +76,7 @@ public class RecurringDepositController {
 
     @GetMapping("getByStatus")
     @PreAuthorize("hasAnyRole('CUSTOMER','MANAGER')")
-    public List<RecurringDepositOutputDto> getByStatus(@RequestParam Long accNo){
+    public List<RecurringDepositOutputDto> getByStatus(@RequestParam Long accNo)throws Exception{
         return recurringDepositService.getByStatus(accNo);
     }
 }
