@@ -30,12 +30,17 @@ To Run application
 
 
 To test from postman
+
   1. Generate a token
+     
       <img width="643" alt="image" src="https://github.com/pavan-thoughtclan/Smallfinance/assets/139839952/5b263bec-d49b-4f7e-8ede-a94276d709f1">
 
-  2. Create an account
+  3. Create an account
+     
       Use the token to create an account.
-      <img width="643" alt="post-account" src="https://github.com/pavan-thoughtclan/Smallfinance/assets/139839952/28cf58f4-ac8a-4a4e-bbdc-4f4e9f1edbaa">
+     
+      <img width="638" alt="image" src="https://github.com/pavan-thoughtclan/Smallfinance/assets/139839952/3e37110c-54a9-41db-9612-c913b6cda5a7">
+
 
 
 Testing in Jmeter
