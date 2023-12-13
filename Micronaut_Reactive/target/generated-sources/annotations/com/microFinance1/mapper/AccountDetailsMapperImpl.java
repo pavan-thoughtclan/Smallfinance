@@ -9,8 +9,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-11-17T19:48:15+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-12-13T16:16:11+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.36.0.v20231114-0937, environment: Java 17.0.9 (Eclipse Adoptium)"
 )
 @Singleton
 @Named
@@ -24,8 +24,8 @@ public class AccountDetailsMapperImpl implements AccountDetailsMapper {
 
         AccountDetails accountDetails = new AccountDetails();
 
-        accountDetails.setOpeningDate( accountDetailsInputDto.getOpeningDate() );
         accountDetails.setClosingDate( accountDetailsInputDto.getClosingDate() );
+        accountDetails.setOpeningDate( accountDetailsInputDto.getOpeningDate() );
 
         return accountDetails;
     }

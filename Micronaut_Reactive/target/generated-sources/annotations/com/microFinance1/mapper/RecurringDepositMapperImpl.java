@@ -10,8 +10,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-11-17T19:48:15+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-12-13T16:16:11+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.36.0.v20231114-0937, environment: Java 17.0.9 (Eclipse Adoptium)"
 )
 @Singleton
 @Named
@@ -44,13 +44,13 @@ public class RecurringDepositMapperImpl implements RecurringDepositMapper {
             recurringDepositOutputDto.setAccount( String.valueOf( recurringDeposit.getAccountNumber() ) );
         }
         recurringDepositOutputDto.setId( recurringDeposit.getId() );
+        recurringDepositOutputDto.setInterest( recurringDeposit.getInterest() );
+        recurringDepositOutputDto.setMaturityAmount( recurringDeposit.getMaturityAmount() );
+        recurringDepositOutputDto.setMaturityDate( recurringDeposit.getMaturityDate() );
         recurringDepositOutputDto.setMonthTenure( recurringDeposit.getMonthTenure() );
         recurringDepositOutputDto.setMonthlyPaidAmount( recurringDeposit.getMonthlyPaidAmount() );
-        recurringDepositOutputDto.setMaturityAmount( recurringDeposit.getMaturityAmount() );
         recurringDepositOutputDto.setStartDate( recurringDeposit.getStartDate() );
-        recurringDepositOutputDto.setMaturityDate( recurringDeposit.getMaturityDate() );
         recurringDepositOutputDto.setStatus( recurringDeposit.getStatus() );
-        recurringDepositOutputDto.setInterest( recurringDeposit.getInterest() );
 
         return recurringDepositOutputDto;
     }

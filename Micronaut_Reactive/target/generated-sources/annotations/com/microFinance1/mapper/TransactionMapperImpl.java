@@ -11,8 +11,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-11-17T19:48:15+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
+    date = "2023-12-13T16:16:10+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.36.0.v20231114-0937, environment: Java 17.0.9 (Eclipse Adoptium)"
 )
 @Singleton
 @Named
@@ -55,11 +55,11 @@ public class TransactionMapperImpl implements TransactionMapper {
         }
         transactionOutputDto.setTransactionID( transaction.getId() );
         transactionOutputDto.setAmount( transaction.getAmount() );
-        transactionOutputDto.setTransactionType( transaction.getTransactionType() );
-        transactionOutputDto.setTimestamp( transaction.getTimestamp() );
-        transactionOutputDto.setWhichTransaction( transaction.getWhichTransaction() );
         transactionOutputDto.setBalance( transaction.getBalance() );
         transactionOutputDto.setDescription( transaction.getDescription() );
+        transactionOutputDto.setTimestamp( transaction.getTimestamp() );
+        transactionOutputDto.setTransactionType( transaction.getTransactionType() );
+        transactionOutputDto.setWhichTransaction( transaction.getWhichTransaction() );
 
         return transactionOutputDto;
     }
