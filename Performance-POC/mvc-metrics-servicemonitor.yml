@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mvc-monitor
+  labels:
+    release: prometheus
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: spring-mvc-app-service
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 45s  # Adjust the scrape interval as needed
+      scrapeTimeout: 45s

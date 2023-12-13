@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micronaut-reactive-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micronaut-reactive-app
+  template:
+    metadata:
+      labels:
+        app: micronaut-reactive-app
+    spec:
+      containers:
+        - name: micronaut-reactive-app
+          image: performancepoc.azurecr.io/micronaut-reactive:3.5
+          ports:
+            - containerPort: 8085
+          resources:
+            requests:
+              memory: "3Gi"    # Request 3 GB of memory
+              cpu: "500m"      # Request 0.5 vCPU (500 milliCPU)
+            limits:
+              memory: "6Gi"    # Limit container to use up to 6 GB of memory
+              cpu: "2"         # Limit container to use up to 2 vCPUs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: micronaut-reactive-app-service
+  labels:
+    app: micronaut-reactive-app-service
+spec:
+  selector:
+    app: micronaut-reactive-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8085
+  type: LoadBalancer

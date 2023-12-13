@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mock-jwt-provider
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: mock-jwt-provider
+  template:
+    metadata:
+      labels:
+        app: mock-jwt-provider
+    spec:
+      containers:
+        - name: mock-jwt-provider
+          image: performancepoc.azurecr.io/mock-jwt-provider:0.2
+          ports:
+            - containerPort: 8081
+          resources:
+            requests:
+              memory: "3Gi"    # Request 3 GB of memory
+              cpu: "500m"      # Request 0.5 vCPU (500 milliCPU)
+            limits:
+              memory: "6Gi"    # Limit container to use up to 6 GB of memory
+              cpu: "2"         # Limit container to use up to 2 vCPUs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mock-jwt-provider-service
+spec:
+  selector:
+    app: mock-jwt-provider
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8081
+  type: LoadBalancer

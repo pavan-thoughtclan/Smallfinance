@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: micronaut-monitor
+  labels:
+    release: prometheus
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: micronaut-app-service
+  endpoints:
+    - port: http
+      path: /prometheus
+      interval: 10s  # Adjust the scrape interval as needed

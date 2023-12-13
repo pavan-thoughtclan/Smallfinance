@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: webflux-monitor
+  labels:
+    release: prometheus
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: spring-webflux-app-service
+  endpoints:
+    - port: http
+      path: /actuator/prometheus
+      interval: 10s  # Adjust the scrape interval as needed
